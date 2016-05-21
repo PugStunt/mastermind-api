@@ -1,23 +1,20 @@
 package com.pugstunt.mastermind.core.domain;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class GuessRequest {
 
 	@JsonProperty("code")
-	private List<Character> code = new ArrayList<>();
+	private String code;
 	
 	@JsonProperty("game_key")
 	private String gameKey;
 
-	public List<Character> getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(List<Character> code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

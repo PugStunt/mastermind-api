@@ -2,6 +2,7 @@ package com.pugstunt.mastermind.core.domain;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -32,7 +33,7 @@ public class GameResponse {
 	private List<Result> pastResults;
 	
 	@JsonProperty("result")
-	private Result result;
+	private Object result;
 	
 	@JsonProperty("solved")
 	private Boolean solved;
@@ -42,6 +43,9 @@ public class GameResponse {
 	
 	@JsonProperty("user")
 	private String user;
+	
+	@JsonProperty("start_time")
+	private Date startTime;
 
 	public Integer getCodeLength() {
 		return codeLength;
@@ -99,11 +103,11 @@ public class GameResponse {
 		this.pastResults = pastResults;
 	}
 
-	public Result getResult() {
+	public Object getResult() {
 		return result;
 	}
 
-	public void setResult(Result result) {
+	public void setResult(Object result) {
 		this.result = result;
 	}
 
@@ -131,6 +135,11 @@ public class GameResponse {
 		this.user = user;
 	}
 	
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 	
-	
+	public Date getStartTime() {
+		return startTime;
+	}
 }

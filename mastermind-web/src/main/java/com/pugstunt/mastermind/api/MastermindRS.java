@@ -1,5 +1,7 @@
 package com.pugstunt.mastermind.api;
 
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -10,18 +12,22 @@ import javax.ws.rs.core.Response;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
+import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
+import com.pugstunt.mastermind.transformers.GuessTransformer;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/")
 public class MastermindRS {
-
-	private GameService gameService;
-
+	
+	private final GameService gameService;
+	private final GuessImageService guessImageService;
+	
 	@Inject
-	public MastermindRS(final GameService gameService) {
+	public MastermindRS(final GameService gameService, final GuessImageService guessImageService) {
 		this.gameService = gameService;
+		this.guessImageService = guessImageService;
 	}
 
 	@POST
@@ -37,11 +43,19 @@ public class MastermindRS {
 	@POST
 	@Path("/guess")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String guess(GuessRequest guessRequest) {
+	public Response guess(GuessRequest guessRequest) {
 
-		// TODO Validate keys
-		guessRequest.getCode();
-		return "Hello MasterMind - New Game";
+		String gameKey = guessRequest.getGameKey();
+		
+		String code = guessRequest.getCode();
+		List<Color> guess = null;
+//			guessRequest
+//				.getCode()
+//				.chars()
+////				.map(new Color)
+//				.collect(toList());
+		
+		return Response.ok(new GuessTransformer().apply(gameService.checkGuess(gameKey, guess))).build();
 	}
 
 }
