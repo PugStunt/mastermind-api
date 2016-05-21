@@ -1,5 +1,6 @@
 package com.pugstunt.mastermind.conf;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
@@ -23,14 +24,16 @@ public class PersistenceModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public ObjectMapper getObjectMapper() {
-		return new ObjectMapper();
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		return mapper;
 	}
 	
 	@Provides
 	@Singleton
 	public Supplier<RedisConnection<String, String>> redisConnection() {
 		
-		final RedisClient redisClient = new RedisClient(RedisURI.create("localhost:6379"));
+		final RedisClient redisClient = new RedisClient(RedisURI.create("redis://localhost:6379"));
 		return Suppliers.ofInstance(redisClient.connect());
 	}
 	

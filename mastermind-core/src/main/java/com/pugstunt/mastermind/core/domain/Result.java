@@ -2,9 +2,6 @@ package com.pugstunt.mastermind.core.domain;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(NON_NULL)
@@ -14,7 +11,7 @@ public class Result {
 	
 	private int near;
 	
-	private List<Character> guess = new ArrayList<>();
+	private String guess;
 	
 	public int getExact() {
 		return exact;
@@ -32,11 +29,11 @@ public class Result {
 		this.near = near;
 	}
 
-	public List<Character> getGuess() {
+	public String getGuess() {
 		return guess;
 	}
 
-	public void setGuess(List<Character> guess) {
+	public void setGuess(String guess) {
 		this.guess = guess;
 	}
 	

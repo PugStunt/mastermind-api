@@ -10,7 +10,7 @@ import com.google.common.collect.Lists;
 @JsonInclude(NON_NULL)
 public class GameResponse {
 
-	private int codeLength;
+	private Integer codeLength;
 	
 	private List<Character> colors = Lists.newArrayList();
 	
@@ -20,23 +20,23 @@ public class GameResponse {
 	
 	private List<Character> guess = Lists.newArrayList();
 	
-	private int numGuesses;
+	private Integer numGuesses;
 	
 	private List<Result> pastResults = Lists.newArrayList();
 	
 	private Result result;
 	
-	private boolean solved;
+	private Boolean solved;
 	
-	private float timeTaken;
+	private Float timeTaken;
 	
 	private String user;
 
-	public int getCodeLength() {
+	public Integer getCodeLength() {
 		return codeLength;
 	}
 
-	public void setCodeLength(int codeLength) {
+	public void setCodeLength(Integer codeLength) {
 		this.codeLength = codeLength;
 	}
 
@@ -72,11 +72,11 @@ public class GameResponse {
 		this.guess = guess;
 	}
 
-	public int getNumGuesses() {
+	public Integer getNumGuesses() {
 		return numGuesses;
 	}
 
-	public void setNumGuesses(int numGuesses) {
+	public void setNumGuesses(Integer numGuesses) {
 		this.numGuesses = numGuesses;
 	}
 
@@ -96,19 +96,19 @@ public class GameResponse {
 		this.result = result;
 	}
 
-	public boolean isSolved() {
+	public Boolean isSolved() {
 		return solved;
 	}
 
-	public void setSolved(boolean solved) {
+	public void setSolved(Boolean solved) {
 		this.solved = solved;
 	}
 
-	public float getTimeTaken() {
+	public Float getTimeTaken() {
 		return timeTaken;
 	}
 
-	public void setTimeTaken(float timeTaken) {
+	public void setTimeTaken(Float timeTaken) {
 		this.timeTaken = timeTaken;
 	}
 

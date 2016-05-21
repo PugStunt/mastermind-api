@@ -5,14 +5,15 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.google.inject.Inject;
-import com.pugstunt.mastermind.core.domain.GameResponse;
 import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
+import com.pugstunt.mastermind.core.entity.GameEntry;
+import com.pugstunt.mastermind.service.GameService;
+import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/mastermind")
 public class MastermindRS {
@@ -30,8 +31,8 @@ public class MastermindRS {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response newGame(NewGameRequest request) {
 
-		gameService.newGame(request.getUser());
-		return "Hello MasterMind - New Game";
+		final GameEntry game = gameService.newGame(request.getUser());
+		return Response.ok(new NewGameTransformer().apply(game)).build();
 	}
 
 	@POST

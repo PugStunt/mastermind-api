@@ -22,10 +22,10 @@ public class RedisGameStore implements GameStore {
 	}
 	
 	@Override
-	public void save(GameEntry game) {
+	public void save(GameEntry game, long ttl) {
 		final RedisConnection<String, String> connection = connSupplier.get();
 		try {
-			connection.set(game.getGameKey(), mapper.writeValueAsString(game));
+			connection.setex(game.getGameKey(), ttl, mapper.writeValueAsString(game));
 		} catch (JsonProcessingException ex) {
 			throw new RuntimeException(ex);
 		} finally {

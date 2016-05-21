@@ -6,7 +6,7 @@ import com.pugstunt.mastermind.core.entity.GameEntry;
 
 public interface GameStore {
 
-	void save(GameEntry game);
+	void save(GameEntry game, long ttl);
 	
 	Optional<GameEntry> findByKey(String gameKey);
 	
