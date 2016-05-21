@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 
 import com.pugstunt.mastermind.transformers.ColorTransformer;
 
-public class GuessImageService {
+public class ImageService {
 
 	private static final int IMG_HEIGHT = 50;
 	private static final int IMG_WIDTH = 50;
