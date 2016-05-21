@@ -28,8 +28,6 @@ public class RedisGameStore implements GameStore {
 			connection.setex(game.getGameKey(), ttl, mapper.writeValueAsString(game));
 		} catch (JsonProcessingException ex) {
 			throw new RuntimeException(ex);
-		} finally {
-			connection.close();
 		}
 	}
 
