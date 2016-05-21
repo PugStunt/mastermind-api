@@ -1,13 +1,9 @@
 package com.pugstunt.mastermind.api;
 
-import java.io.IOException;
-
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -16,7 +12,6 @@ import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.ImageService;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/")
@@ -24,12 +19,9 @@ public class MastermindRS {
 
 	private GameService gameService;
 
-	private ImageService imageService;
-
 	@Inject
-	public MastermindRS(final GameService gameService, ImageService imageService) {
+	public MastermindRS(final GameService gameService) {
 		this.gameService = gameService;
-		this.imageService = imageService;
 	}
 
 	@POST
@@ -50,14 +42,6 @@ public class MastermindRS {
 		// TODO Validate keys
 		guessRequest.getCode();
 		return "Hello MasterMind - New Game";
-	}
-
-	@GET
-	@Path("/guess_image")
-	@Produces("image/png")
-	public byte[] guessImage(@QueryParam("code") String code) throws IOException {
-
-		return imageService.assembleResponseImage(code);
 	}
 
 }
