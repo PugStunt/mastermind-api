@@ -5,31 +5,42 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.google.common.collect.Lists;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(NON_NULL)
 public class GameResponse {
 
+	@JsonProperty("code_length")
 	private Integer codeLength;
 	
-	private List<Character> colors = Lists.newArrayList();
+	@JsonProperty("colors")
+	private List<Character> colors;
 	
+	@JsonProperty("further_instructions")
 	private String furtherInstructions;
 	
+	@JsonProperty("game_key")
 	private String gameKey;
 	
-	private List<Character> guess = Lists.newArrayList();
+	@JsonProperty("guess")
+	private List<Character> guess;
 	
+	@JsonProperty("num_guesses")
 	private Integer numGuesses;
 	
-	private List<Result> pastResults = Lists.newArrayList();
+	@JsonProperty("past_results")
+	private List<Result> pastResults;
 	
+	@JsonProperty("result")
 	private Result result;
 	
+	@JsonProperty("solved")
 	private Boolean solved;
 	
+	@JsonProperty("time_taken")
 	private Float timeTaken;
 	
+	@JsonProperty("user")
 	private String user;
 
 	public Integer getCodeLength() {
