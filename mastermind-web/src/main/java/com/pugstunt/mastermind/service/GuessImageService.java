@@ -1,24 +1,19 @@
-package com.pugstunt.mastermind.core.service;
+package com.pugstunt.mastermind.service;
 
 import static java.util.Objects.isNull;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-
 import com.google.common.collect.Lists;
 
 public class GuessImageService {
-
-	private static final String IMG_PATH = "C:\\Users\\evandro\\workspace\\mastermind-be\\image.png";
 
 	private static final int IMG_HEIGHT = 50;
 	private static final int IMG_WIDTH = 50;
@@ -32,6 +27,7 @@ public class GuessImageService {
 	private static final int[] PURPLE = { 155, 89, 182 };
 	private static final int[] CYAN = { 26, 188, 156 };
 	private static final int[] MAGENTA = { 222, 107, 174 };
+
 	private static final Map<String, int[]> colorMap = new HashMap<>();
 	static {
 		colorMap.put("R", RED);
@@ -44,14 +40,7 @@ public class GuessImageService {
 		colorMap.put("M", MAGENTA);
 	}
 
-	public static void main(String args[]) throws IOException {
-
-		BufferedImage image = assembleResponseImage("RPYGOGOP");
-		// return image;
-		saveImage(image);
-	}
-
-	public static BufferedImage assembleResponseImage(String guessCode) throws IOException {
+	public BufferedImage assembleResponseImage(String guessCode) throws IOException {
 
 		List<String> colors = new ArrayList<>();
 
@@ -106,18 +95,4 @@ public class GuessImageService {
 		return newImage;
 	}
 
-	private static File saveImage(BufferedImage img) throws IOException {
-
-		// file object
-		File f = null;
-		// write image
-		try {
-			f = new File(IMG_PATH);
-			ImageIO.write(img, "png", f);
-			return f;
-		} catch (IOException e) {
-			System.out.println("Error: " + e);
-		}
-		return null;
-	}
 }

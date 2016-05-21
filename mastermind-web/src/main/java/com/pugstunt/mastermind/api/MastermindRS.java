@@ -1,10 +1,14 @@
 package com.pugstunt.mastermind.api;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -13,6 +17,7 @@ import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
+import com.pugstunt.mastermind.service.GuessImageService;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/")
@@ -24,6 +29,9 @@ public class MastermindRS {
 	public MastermindRS(final GameService gameService) {
 		this.gameService = gameService;
 	}
+
+	@Inject
+	private GuessImageService guessImageService;
 
 	@POST
 	@Path("/new_game")
@@ -48,8 +56,8 @@ public class MastermindRS {
 	@GET
 	@Path("/guess_image")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String guessImage() {
-		return "Hello MasterMind - The image for slack use";
+	public BufferedImage guessImage(@QueryParam("code") String code) throws IOException {
+		return guessImageService.assembleResponseImage(code);
 	}
 
 }
