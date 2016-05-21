@@ -1,23 +1,28 @@
 package com.pugstunt.mastermind.core.domain;
 
-import java.util.ArrayList;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.common.collect.Lists;
+
+@JsonInclude(NON_NULL)
 public class GameResponse {
 
 	private int codeLength;
 	
-	private List<Character> colors = new ArrayList<>();
+	private List<Character> colors = Lists.newArrayList();
 	
 	private String furtherInstructions;
 	
 	private String gameKey;
 	
-	private List<Character> guess = new ArrayList<>();
+	private List<Character> guess = Lists.newArrayList();
 	
 	private int numGuesses;
 	
-	private List<Result> pastResults = new ArrayList<>();
+	private List<Result> pastResults = Lists.newArrayList();
 	
 	private Result result;
 	
