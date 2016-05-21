@@ -5,38 +5,49 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.google.common.collect.Lists;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(NON_NULL)
 public class GameResponse {
 
-	private int codeLength;
+	@JsonProperty("code_length")
+	private Integer codeLength;
 	
-	private List<Character> colors = Lists.newArrayList();
+	@JsonProperty("colors")
+	private List<Character> colors;
 	
+	@JsonProperty("further_instructions")
 	private String furtherInstructions;
 	
+	@JsonProperty("game_key")
 	private String gameKey;
 	
-	private List<Character> guess = Lists.newArrayList();
+	@JsonProperty("guess")
+	private List<Character> guess;
 	
-	private int numGuesses;
+	@JsonProperty("num_guesses")
+	private Integer numGuesses;
 	
-	private List<Result> pastResults = Lists.newArrayList();
+	@JsonProperty("past_results")
+	private List<Result> pastResults;
 	
+	@JsonProperty("result")
 	private Result result;
 	
-	private boolean solved;
+	@JsonProperty("solved")
+	private Boolean solved;
 	
-	private float timeTaken;
+	@JsonProperty("time_taken")
+	private Float timeTaken;
 	
+	@JsonProperty("user")
 	private String user;
 
-	public int getCodeLength() {
+	public Integer getCodeLength() {
 		return codeLength;
 	}
 
-	public void setCodeLength(int codeLength) {
+	public void setCodeLength(Integer codeLength) {
 		this.codeLength = codeLength;
 	}
 
@@ -72,11 +83,11 @@ public class GameResponse {
 		this.guess = guess;
 	}
 
-	public int getNumGuesses() {
+	public Integer getNumGuesses() {
 		return numGuesses;
 	}
 
-	public void setNumGuesses(int numGuesses) {
+	public void setNumGuesses(Integer numGuesses) {
 		this.numGuesses = numGuesses;
 	}
 
@@ -96,19 +107,19 @@ public class GameResponse {
 		this.result = result;
 	}
 
-	public boolean isSolved() {
+	public Boolean isSolved() {
 		return solved;
 	}
 
-	public void setSolved(boolean solved) {
+	public void setSolved(Boolean solved) {
 		this.solved = solved;
 	}
 
-	public float getTimeTaken() {
+	public Float getTimeTaken() {
 		return timeTaken;
 	}
 
-	public void setTimeTaken(float timeTaken) {
+	public void setTimeTaken(Float timeTaken) {
 		this.timeTaken = timeTaken;
 	}
 
