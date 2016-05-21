@@ -1,15 +1,11 @@
 package com.pugstunt.mastermind.api;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -19,7 +15,6 @@ import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.ImageService;
 import com.pugstunt.mastermind.transformers.GuessTransformer;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
@@ -27,12 +22,10 @@ import com.pugstunt.mastermind.transformers.NewGameTransformer;
 public class MastermindRS {
 	
 	private final GameService gameService;
-	private final ImageService guessImageService;
 	
 	@Inject
-	public MastermindRS(final GameService gameService, final ImageService guessImageService) {
+	public MastermindRS(final GameService gameService) {
 		this.gameService = gameService;
-		this.guessImageService = guessImageService;
 	}
 
 	@POST
@@ -61,13 +54,6 @@ public class MastermindRS {
 //				.collect(toList());
 		
 		return Response.ok(new GuessTransformer().apply(gameService.checkGuess(gameKey, guess))).build();
-	}
-
-	@GET
-	@Path("/guess_image")
-	@Produces(MediaType.APPLICATION_JSON)
-	public BufferedImage guessImage(@QueryParam("code") String code) throws IOException {
-		return guessImageService.assembleResponseImage(code);
 	}
 
 }
