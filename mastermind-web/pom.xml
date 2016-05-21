@@ -50,6 +50,12 @@
 			<artifactId>google-api-client</artifactId>
 			<version>1.19.1</version>
 		</dependency>
+		<!-- http://mvnrepository.com/artifact/com.sun.jersey/jersey-bundle -->
+		<dependency>
+			<groupId>com.sun.jersey</groupId>
+			<artifactId>jersey-bundle</artifactId>
+			<version>1.19</version>
+		</dependency>
 		<dependency>
 			<groupId>biz.paluch.redis</groupId>
 			<artifactId>lettuce</artifactId>

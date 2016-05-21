@@ -36,6 +36,7 @@ public class GameService {
 				.solved(false)
 				.answer(makeChallenge())
 				.startTime(new Date().getTime())
+				.active(true)
 				.build();
 		
 		gameStore.save(game);
@@ -58,7 +59,9 @@ public class GameService {
 		
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
 		if (game.isPresent()) {
-			return check(game.get(), guess);
+			final GameEntry currentGame = check(game.get(), guess);
+			gameStore.save(currentGame);
+			return currentGame;
 		}
 		
 		throw new RuntimeException();
@@ -105,7 +108,7 @@ public class GameService {
 			return GameEntry
 					.builder(game.getGameKey())
 					.playerName(game.getPlayer())
-					.solved(game.isSolved())
+					.solved(exact == answer.size())
 					.active(game.isActive())
 					.answer(answer)
 					.guessesNumber(game.getGuesses() + 1)
