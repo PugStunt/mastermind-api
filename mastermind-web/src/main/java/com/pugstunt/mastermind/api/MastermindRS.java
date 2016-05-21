@@ -1,6 +1,5 @@
 package com.pugstunt.mastermind.api;
 
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 import javax.ws.rs.Consumes;
@@ -17,21 +16,21 @@ import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.GuessImageService;
+import com.pugstunt.mastermind.service.ImageService;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/")
 public class MastermindRS {
-	
+
 	private GameService gameService;
-	
-	@Inject
-	public MastermindRS(final GameService gameService) {
-		this.gameService = gameService;
-	}
+
+	private ImageService imageService;
 
 	@Inject
-	private GuessImageService guessImageService;
+	public MastermindRS(final GameService gameService, ImageService imageService) {
+		this.gameService = gameService;
+		this.imageService = imageService;
+	}
 
 	@POST
 	@Path("/new_game")
@@ -55,9 +54,10 @@ public class MastermindRS {
 
 	@GET
 	@Path("/guess_image")
-	@Produces(MediaType.APPLICATION_JSON)
-	public BufferedImage guessImage(@QueryParam("code") String code) throws IOException {
-		return guessImageService.assembleResponseImage(code);
+	@Produces("image/png")
+	public byte[] guessImage(@QueryParam("code") String code) throws IOException {
+
+		return imageService.assembleResponseImage(code);
 	}
 
 }
