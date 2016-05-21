@@ -43,10 +43,24 @@
 				<artifactId>guava</artifactId>
 				<version>19.0</version>
 			</dependency>
+			<dependency>
+				<groupId>biz.paluch.redis</groupId>
+				<artifactId>lettuce</artifactId>
+				<version>3.2.Final</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>ru.trylogic.maven.plugins</groupId>
+					<artifactId>redis-maven-plugin</artifactId>
+					<version>1.4.6</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
