@@ -33,7 +33,11 @@ public class ImageRS {
 	@Produces("image/png")
 	public byte[] guessImage(@PathParam("code") String code) throws IOException {
 
-		return imageService.assembleResponseImage(code);
+		try {
+			return imageService.assembleResponseImage(code);
+		} catch (IllegalArgumentException e) {
+			return imageService.fallbackImage(code);
+		}
 	}
 
 }
