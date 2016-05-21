@@ -9,27 +9,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Result {
 
 	@JsonProperty("exact")
-	private int exact;
+	private Integer exact;
 	
 	@JsonProperty("near")
-	private int near;
+	private Integer near;
 	
 	@JsonProperty("guess")
 	private String guess;
 	
-	public int getExact() {
+	public Integer getExact() {
 		return exact;
 	}
 
-	public void setExact(int exact) {
+	public void setExact(Integer exact) {
 		this.exact = exact;
 	}
 
-	public int getNear() {
+	public Integer getNear() {
 		return near;
 	}
 
-	public void setNear(int near) {
+	public void setNear(Integer near) {
 		this.near = near;
 	}
 
