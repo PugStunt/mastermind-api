@@ -7,10 +7,8 @@ import java.util.List;
 import java.util.function.Function;
 
 import com.pugstunt.mastermind.core.domain.GameResponse;
-import com.pugstunt.mastermind.core.domain.Result;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
-import com.pugstunt.mastermind.core.entity.PastResult;
 
 public class NewGameTransformer implements Function<GameEntry, GameResponse> {
 
@@ -40,19 +38,6 @@ public class NewGameTransformer implements Function<GameEntry, GameResponse> {
 		response.setSolved(game.isSolved());
 		
 		return response;
-	}
-
-	private class PastResultTransformer implements Function<PastResult, Result> {
-
-		@Override
-		public Result apply(PastResult pastResult) {
-			final Result result = new Result();
-			result.setExact(pastResult.getExact());
-			result.setNear(pastResult.getNear());
-			result.setGuess(pastResult.getGuess());
-			return result;
-		}
-		
 	}
 
 }

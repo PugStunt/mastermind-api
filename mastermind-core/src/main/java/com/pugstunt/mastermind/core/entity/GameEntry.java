@@ -16,6 +16,8 @@ public class GameEntry implements Serializable {
 	private List<PastResult> pastResults;
 	private boolean solved;
 	private List<Color> answer;
+	private long startTime;
+	private boolean active;
 	
 	private GameEntry() {
 		super();
@@ -45,6 +47,14 @@ public class GameEntry implements Serializable {
 		return answer;
 	}
 	
+	public long getStartTime() {
+		return startTime;
+	}
+	
+	public boolean isActive() {
+		return active;
+	}
+	
 	public static Builder builder(String gameKey) {
 		return new Builder(gameKey);
 	}
@@ -57,6 +67,8 @@ public class GameEntry implements Serializable {
 		private List<PastResult> pastResults;
 		private boolean solved;
 		private List<Color> answer;
+		private long startTime;
+		private boolean active;
 		
 		private Builder(String gameKey) {
 			this.gameKey = gameKey;
@@ -87,6 +99,16 @@ public class GameEntry implements Serializable {
 			return this;
 		}
 		
+		public Builder startTime(long timestamp) {
+			startTime = timestamp;
+			return this;
+		}
+		
+		public Builder active(boolean value) {
+			active = value;
+			return this;
+		}
+		
 		public GameEntry build() {
 			GameEntry gameEntry = new GameEntry();
 			gameEntry.gameKey = gameKey;
@@ -95,6 +117,8 @@ public class GameEntry implements Serializable {
 			gameEntry.pastResults = pastResults != null ? pastResults : Lists.newArrayList();
 			gameEntry.solved = solved;
 			gameEntry.answer = answer;
+			gameEntry.startTime = startTime;
+			gameEntry.active = active;
 			return gameEntry;
 		}
 		
