@@ -15,7 +15,7 @@ import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
-@Path("v1/mastermind")
+@Path("v1/")
 public class MastermindRS {
 	
 	private GameService gameService;
