@@ -2,22 +2,22 @@ package com.pugstunt.mastermind.core.domain.enums;
 
 public enum Color {
 
-	RED("R"),
-	GREEN("G"),
-	BLUE("B"),
-	YELLOW("Y"),
-	ORANGE("O"),
-	PURPLE("P"),
-	CYAN("C"),
-	MAGENTA("M");
+	RED('R'),
+	GREEN('G'),
+	BLUE('B'),
+	YELLOW('Y'),
+	ORANGE('O'),
+	PURPLE('P'),
+	CYAN('C'),
+	MAGENTA('M');
 	
-	private String value;
+	private Character value;
 	
-	private Color(String value) {
+	private Color(Character value) {
 		this.value = value;
 	}
 	
-	public String getValue() {
+	public Character getValue() {
 		return value;
 	}
 }

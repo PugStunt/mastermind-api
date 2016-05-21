@@ -1,7 +1,10 @@
 package com.pugstunt.mastermind.core.domain;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class NewGameRequest {
 	
+	@JsonProperty("user")
 	private String user;
 
 	public String getUser() {

@@ -3,10 +3,14 @@ package com.pugstunt.mastermind.core.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class GuessRequest {
 
+	@JsonProperty("code")
 	private List<Character> code = new ArrayList<>();
 	
+	@JsonProperty("game_key")
 	private String gameKey;
 
 	public List<Character> getCode() {
