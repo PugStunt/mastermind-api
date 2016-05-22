@@ -28,13 +28,15 @@ public class PersistenceModule extends AbstractModule {
 		mapper.setSerializationInclusion(Include.NON_NULL);
 		return mapper;
 	}
-	
+
 	@Provides
 	@Singleton
-	public Supplier<RedisConnection<String, String>> redisConnection() {
+	public Supplier<RedisConnection<String, String>> redisConnection() throws Exception {
+
+		final RedisClient redisClient = 
+				new RedisClient(RedisURI.create(System.getProperty("redis.connection.string")));
 		
-		final RedisClient redisClient = new RedisClient(RedisURI.create("redis://localhost:6379"));
 		return Suppliers.ofInstance(redisClient.connect());
 	}
-	
+
 }
