@@ -34,7 +34,7 @@ public class PersistenceModule extends AbstractModule {
 	public Supplier<RedisConnection<String, String>> redisConnection() throws Exception {
 
 		final RedisClient redisClient = 
-				new RedisClient(RedisURI.create(System.getenv("redis.connection.string")));
+				new RedisClient(RedisURI.create("redis://localhost:6379"));
 		
 		return Suppliers.ofInstance(redisClient.connect());
 	}

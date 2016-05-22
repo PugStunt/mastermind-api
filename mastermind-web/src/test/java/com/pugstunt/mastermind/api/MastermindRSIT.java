@@ -82,7 +82,7 @@ public class MastermindRSIT {
 			statusCode(HttpStatus.SC_OK).
 			body("code_length", equalTo(AVAILABLE_COLORS.length)).
 			body("colors", contains(AVAILABLE_COLORS)).
-			body("game_key", allOf(notNullValue(), any(String.class))).
+			body("game_key", equalTo(gameKey)).
 			body("num_guesses", equalTo(1)).
 			body("past_results[0].exact", is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(AVAILABLE_COLORS.length)))).
 			body("past_results[0].near", is(both(greaterThanOrEqualTo(0)).and(lessThanOrEqualTo(AVAILABLE_COLORS.length)))).
@@ -115,6 +115,62 @@ public class MastermindRSIT {
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
 			body("message", equalTo("User Session Not Found"));
+	}
+	
+	@Test
+	public void invalidColorGuess() {
+		
+		final GuessRequest request = new GuessRequest();
+		request.setCode("AAAAAAAA");
+		request.setGameKey(getGameKey());
+		
+		given().
+			accept(MediaType.APPLICATION_JSON).
+			contentType(MediaType.APPLICATION_JSON).
+			body(request).
+		when().
+			post("/v1/guess").
+		then().
+			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
+			body("status", equalTo("Internal Server Error")).
+			body("message", equalTo("Unknown color: 'A'"));
+	}
+	
+	@Test
+	public void invalidGuessSize() {
+		
+		final GuessRequest request = new GuessRequest();
+		request.setCode("R");
+		request.setGameKey(getGameKey());
+		
+		given().
+			accept(MediaType.APPLICATION_JSON).
+			contentType(MediaType.APPLICATION_JSON).
+			body(request).
+		when().
+			post("/v1/guess").
+		then().
+			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
+			body("status", equalTo("Internal Server Error")).
+			body("message", equalTo("Invalid size for guess. Expected: 8; Actual: 1"));
+	}
+	
+	@Test
+	public void guessNotInformed() {
+		
+		final GuessRequest request = new GuessRequest();
+		request.setGameKey(getGameKey());
+		
+		given().
+			accept(MediaType.APPLICATION_JSON).
+			contentType(MediaType.APPLICATION_JSON).
+			body(request).
+		when().
+			post("/v1/guess").
+		then().
+			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
+			body("status", equalTo("Internal Server Error")).
+			body("message", equalTo("Invalid guess"));
 	}
 	
 	private String getGameKey() {

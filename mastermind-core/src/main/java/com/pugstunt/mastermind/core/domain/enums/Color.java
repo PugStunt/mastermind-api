@@ -65,7 +65,7 @@ public enum Color {
 			}
 		}
 
-		throw new IllegalArgumentException("Color not found for key " + c);
+		throw new IllegalArgumentException("Unknown color: '" + (char) c + "'");
 	}
 
 }
