@@ -23,6 +23,7 @@ public class SlackHandlerDefaultTest {
 		assertFalse(handler.accept("newgame"));
 		assertFalse(handler.accept("guess"));
 		assertFalse(handler.accept("hint"));
+		assertFalse(handler.accept("help"));
 	}
 
 	@Test
@@ -32,7 +33,7 @@ public class SlackHandlerDefaultTest {
 		SlackResponse response = new SlackHandlerDefault(null).apply(request);
 		String text = response.getText();
 
-		assertEquals("Didn't understand, captain", text);
+		assertEquals("Didn't understand, captain. Use 'help' command for further instructions.", text);
 	}
 
 	@Test
@@ -61,12 +62,9 @@ public class SlackHandlerDefaultTest {
 
 	private SlackRequest buildRequest(String text) {
 		SlackRequest request = new SlackRequest();
-		request.setChannelId("channelId1");
-		request.setChannelName("hannelName");
 		request.setText(text);
-		request.setUsername("username");
 		request.setTriggerWord("mm");
 		return request;
 	}
-	
+
 }
