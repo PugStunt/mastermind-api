@@ -45,6 +45,8 @@ public class RestModule extends JerseyServletModule {
 		@Override
 		public Response toResponse(RuntimeException ex) {
 			
+			ex.printStackTrace(System.out);
+			
 			ErrorResponse response = new ErrorResponse();
 			response.setStatus("Internal Server Error");
 			response.setMessage(ex.getMessage());
