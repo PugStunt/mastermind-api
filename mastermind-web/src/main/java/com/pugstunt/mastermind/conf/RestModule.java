@@ -21,7 +21,6 @@ public class RestModule extends JerseyServletModule {
 	@Override
 	protected void configureServlets() {
 		
-		bind(CorsFilter.class);
 		bind(MastermindExceptionMapper.class).in(Singleton.class);
 		
 		final ResourceConfig rc = new PackagesResourceConfig("com.pugstunt.mastermind.api");
