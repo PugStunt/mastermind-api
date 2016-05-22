@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.io.Files;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
+import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 
 public class SlackHandlerHelp implements SlackHandler {
 
@@ -27,17 +28,24 @@ public class SlackHandlerHelp implements SlackHandler {
 
 	@Override
 	public SlackResponse apply(SlackRequest request) {
-		final StringBuilder sb = new StringBuilder();
+		SlackResponse response = new SlackResponse();
+		
+		response.getAttachments().add(SlackResponseAttachment.info(loadHelpText()));		
+		
+		return response;
+	}
+
+	private String loadHelpText() {
 		try {
+			final StringBuilder sb = new StringBuilder();
 			List<String> readLines = Files.readLines(new File(SlackHandlerHelp.class.getResource(HELP_FILE).getPath()),
 					Charset.defaultCharset());
 			readLines.forEach(line -> sb.append(line).append(System.lineSeparator()));
-			return new SlackResponse(sb.toString());
+			return sb.toString();
 		} catch (IOException ex) {
 			logger.warn("Help text couln't be loaded, setting text as 'Unavailable'");
-			return new SlackResponse("Sorry, help info is unavailable at moment");
+			return "Sorry, help info is unavailable at moment";
 		}
-				
 	}
 
 }

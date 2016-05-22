@@ -114,7 +114,7 @@ public class MastermindRSIT {
 		then().
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
-			body("message", equalTo("User Session Not Found"));
+			body("message", equalTo("No active game"));
 	}
 	
 	@Test

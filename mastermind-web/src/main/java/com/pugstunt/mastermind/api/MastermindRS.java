@@ -48,7 +48,8 @@ public class MastermindRS {
 
 		List<Color> guess = Color.from(guessRequest.getCode());
 
-		return Response.ok(new GuessTransformer().apply(gameService.checkGuess(gameKey, guess))).build();
+		GameEntry game = gameService.checkGuess(gameKey, guess);
+		return Response.ok(new GuessTransformer().apply(game)).build();
 	}
 
 }

@@ -19,7 +19,7 @@ import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
-import com.pugstunt.mastermind.exception.NoActiveGameException;
+import com.pugstunt.mastermind.exception.GameNotFoundException;
 import com.pugstunt.mastermind.store.GameStore;
 
 public class GameService {
@@ -70,7 +70,7 @@ public class GameService {
 		return challenge;
 	}
 	
-	public GameEntry checkGuess(String gameKey, List<Color> guess) {
+	public GameEntry checkGuess(String gameKey, List<Color> guess) throws GameNotFoundException {
 
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
 
@@ -80,8 +80,9 @@ public class GameService {
 			gameStore.save(currentGame);
 			return currentGame;
 		}
+		
 		logger.info("No active game for gameKey={}", gameKey);
-		throw new NoActiveGameException();
+		throw new GameNotFoundException();
 	}
 	
 	private GameEntry check(GameEntry game, List<Color> guess) {

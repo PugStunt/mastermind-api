@@ -25,7 +25,7 @@ public class SlackHandlerDefault implements SlackHandler {
 		try {
 			return slackHandlerGuess.apply(request);
 		} catch (Exception e) {
-			return new SlackResponse("Didn't understand, captain. Use 'help' command for further instructions.");
+			return SlackResponse.error("Didn't understand, captain. Use 'help' command for further instructions.");
 		}
 	}
 
