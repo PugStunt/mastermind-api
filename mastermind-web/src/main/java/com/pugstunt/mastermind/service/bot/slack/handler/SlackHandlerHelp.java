@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.io.Files;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
@@ -12,7 +15,10 @@ import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 
 public class SlackHandlerHelp implements SlackHandler {
 
+	static final Logger logger = LoggerFactory.getLogger(SlackHandlerHelp.class);
+	
 	private static final String HELP = "help";
+	private static final String HELP_FILE = "help.txt";
 
 	@Override
 	public boolean accept(String message) {
@@ -30,15 +36,16 @@ public class SlackHandlerHelp implements SlackHandler {
 	}
 
 	private String loadHelpText() {
-		StringBuilder sb = new StringBuilder();
 		try {
-			List<String> readLines = Files.readLines(new File(SlackHandlerHelp.class.getResource("help.txt").getPath()),
+			final StringBuilder sb = new StringBuilder();
+			List<String> readLines = Files.readLines(new File(SlackHandlerHelp.class.getResource(HELP_FILE).getPath()),
 					Charset.defaultCharset());
 			readLines.forEach(line -> sb.append(line).append(System.lineSeparator()));
-		} catch (IOException e) {
+			return sb.toString();
+		} catch (IOException ex) {
+			logger.warn("Help text couln't be loaded, setting text as 'Unavailable'");
+			return "Sorry, help info is unavailable at moment";
 		}
-		String text = sb.toString();
-		return text;
 	}
 
 }

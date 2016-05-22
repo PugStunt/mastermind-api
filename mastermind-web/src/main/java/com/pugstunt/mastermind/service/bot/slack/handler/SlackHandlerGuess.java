@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
@@ -12,13 +14,13 @@ import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
-import com.pugstunt.mastermind.exception.MastermindException;
 import com.pugstunt.mastermind.service.GameService;
 import com.sun.jersey.api.core.HttpRequestContext;
 
 public class SlackHandlerGuess implements SlackHandler {
 
 	private static final String[] COMMANDS = { "guess", "my guess", "i guess" };
+	static final Logger logger = LoggerFactory.getLogger(SlackHandlerGuess.class);
 
 	private GameService gameService;
 
@@ -41,13 +43,13 @@ public class SlackHandlerGuess implements SlackHandler {
 	}
 
 	@Override
-	public SlackResponse apply(SlackRequest slackRequest) throws MastermindException {
+	public SlackResponse apply(SlackRequest slackRequest) {
 
-		String[] splittedCommand = slackRequest.getText().split(" ");
-		String guess = splittedCommand[splittedCommand.length - 1];
-		List<Color> colors = Color.from(guess);
-		String gameKey = gameService.buildKey(slackRequest.getKeyBase());
-		GameEntry game = gameService.checkGuess(gameKey, colors);
+		final String[] splittedCommand = slackRequest.getText().split(" ");
+		final String guess = splittedCommand[splittedCommand.length - 1];
+		final List<Color> colors = Color.from(guess);
+		final String gameKey = gameService.buildKey(slackRequest.getKeyBase());
+		final GameEntry game = gameService.checkGuess(gameKey, colors);
 
 		SlackResponse response = new SlackResponse();
 		SlackResponseAttachment attachment = SlackResponseAttachment.info(responseText(game, guess));

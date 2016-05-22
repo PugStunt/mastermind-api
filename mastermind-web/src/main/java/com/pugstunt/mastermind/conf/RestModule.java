@@ -4,6 +4,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
@@ -43,8 +46,12 @@ public class RestModule extends JerseyServletModule {
 	@Provider
 	public static class MastermindExceptionMapper implements ExceptionMapper<RuntimeException> {
 
+		static final Logger logger = LoggerFactory.getLogger(MastermindExceptionMapper.class);
+		
 		@Override
 		public Response toResponse(RuntimeException ex) {
+
+			logger.error("Error", ex);
 			
 			ErrorResponse response = new ErrorResponse();
 			response.setStatus("Internal Server Error");

@@ -2,15 +2,11 @@ package com.pugstunt.mastermind.service.bot.slack.handler;
 
 import java.util.Optional;
 
-import com.google.inject.Guice;
 import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.pugstunt.mastermind.conf.MastermindLocal;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.SlackService;
 import com.pugstunt.mastermind.store.GameStore;
 
 public class SlackHandlerNewGame implements SlackHandler {
@@ -53,8 +49,4 @@ public class SlackHandlerNewGame implements SlackHandler {
 		gameStore.remove(game.getGameKey());
 	}
 
-	public static void main(String[] args) {
-		Injector createInjector = Guice.createInjector(new MastermindLocal());
-		createInjector.getInstance(SlackService.class);
-	}
 }

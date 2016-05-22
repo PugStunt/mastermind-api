@@ -4,7 +4,6 @@ import javax.inject.Inject;
 
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
-import com.pugstunt.mastermind.core.domain.enums.Color;
 
 public class SlackHandlerDefault implements SlackHandler {
 
@@ -24,7 +23,6 @@ public class SlackHandlerDefault implements SlackHandler {
 	public SlackResponse apply(SlackRequest request) {
 
 		try {
-			Color.from(request.getTextWithouTrigger());
 			return slackHandlerGuess.apply(request);
 		} catch (Exception e) {
 			return SlackResponse.error("Didn't understand, captain. Use 'help' command for further instructions.");
