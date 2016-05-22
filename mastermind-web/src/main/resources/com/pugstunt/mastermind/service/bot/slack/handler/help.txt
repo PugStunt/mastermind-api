@@ -1,20 +1,18 @@
+Hello there!
+I'll create a secret sequence of color, and I'd like you to discover it!
+This sequence has 8 colors and you need to guess all of them, in the correct order.
 
-usage: [new game] [start] [start game]
-       [guess <guess>] [my guess <guess>] [I guess <guess>]
-       [stop] [quit] [help]
+MasterMind commands are:
 
-These are common MasterMind commands used in various situations:
+*New Game:* new game
+*Guess:* Send your guess like: `RBGYOPCM`
 
-start a new game - possible commands
-   new game
-   start
-   start game
-
-send a new guess for the ongoing game
-   guess
-   my guess
-   I guess
-
-quit playing / end current game
-   stop
-   quit
+Available colors:
+	R: red
+	B: green
+	G: blue
+	Y: yellow
+	O: orange
+	P: purple
+	C: cyan
+	M: magenta

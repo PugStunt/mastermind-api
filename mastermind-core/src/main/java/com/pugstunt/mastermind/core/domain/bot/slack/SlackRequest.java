@@ -29,7 +29,7 @@ public class SlackRequest {
 	private String text;
 
 	@JsonProperty("trigger_word")
-	private String triggerWord;
+	private String triggerWord = "";
 
 	public String getToken() {
 		return token;
@@ -100,7 +100,7 @@ public class SlackRequest {
 	}
 
 	public String getTextWithouTrigger() {
-		if(text.indexOf(triggerWord) == 0){
+		if(triggerWord != null && text.indexOf(triggerWord) == 0){
 			return text.substring(triggerWord.length());
 		}
 		

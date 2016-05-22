@@ -20,7 +20,7 @@ import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
 @Path("v1/")
 public class MastermindRS {
-	
+
 	private final GameService gameService;
 	
 	@Inject
@@ -35,9 +35,7 @@ public class MastermindRS {
 	public Response newGame(NewGameRequest request) {
 
 		final GameEntry game = gameService.newGame(request.getUser());
-		
-		System.out.println("RESULT=" + game.getAnswer());
-		
+
 		return Response.ok(new NewGameTransformer().apply(game)).build();
 	}
 
@@ -50,7 +48,8 @@ public class MastermindRS {
 
 		List<Color> guess = Color.from(guessRequest.getCode());
 
-		return Response.ok(new GuessTransformer().apply(gameService.checkGuess(gameKey, guess))).build();
+		GameEntry game = gameService.checkGuess(gameKey, guess);
+		return Response.ok(new GuessTransformer().apply(game)).build();
 	}
 
 }
