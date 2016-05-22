@@ -1,1 +1,1 @@
-web:    java  -jar target/dependency/webapp-runner.jar  mastermind-web/target/*.war
+web:    java  -jar target/dependency/webapp-runner.jar --port=$PORT mastermind-web/target/*.war
