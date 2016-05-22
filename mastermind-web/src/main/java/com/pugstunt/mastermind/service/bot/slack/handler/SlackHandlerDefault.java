@@ -14,7 +14,7 @@ public class SlackHandlerDefault implements SlackHandler {
 	public SlackHandlerDefault(SlackHandlerGuess slackHandlerGuess) {
 		this.slackHandlerGuess = slackHandlerGuess;
 	}
-	
+
 	@Override
 	public boolean accept(String message) {
 		return false;
@@ -27,7 +27,7 @@ public class SlackHandlerDefault implements SlackHandler {
 			Color.from(request.getTextWithouTrigger().replaceAll("\\s", ""));
 			return slackHandlerGuess.apply(request);
 		} catch (Exception e) {
-			return new SlackResponse("Didn't understand, captain");
+			return new SlackResponse("Didn't understand, captain. Use 'help' command for further instructions.");
 		}
 	}
 
