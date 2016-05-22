@@ -11,6 +11,7 @@ import com.google.inject.Singleton;
 import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisConnection;
 import com.lambdaworks.redis.RedisURI;
+import com.pugstunt.mastermind.conf.env.ConnectionRedis;
 import com.pugstunt.mastermind.store.GameStore;
 import com.pugstunt.mastermind.store.redis.RedisGameStore;
 
@@ -31,10 +32,10 @@ public class PersistenceModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	public Supplier<RedisConnection<String, String>> redisConnection() throws Exception {
+	public Supplier<RedisConnection<String, String>> redisConnection(ConnectionRedis env) throws Exception {
 
 		final RedisClient redisClient = 
-				new RedisClient(RedisURI.create(System.getenv("redis.connection.string")));
+				new RedisClient(RedisURI.create(env.get()));
 		
 		return Suppliers.ofInstance(redisClient.connect());
 	}

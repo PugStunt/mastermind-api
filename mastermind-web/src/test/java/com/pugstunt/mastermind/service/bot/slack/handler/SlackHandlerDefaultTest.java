@@ -68,4 +68,5 @@ public class SlackHandlerDefaultTest {
 		request.setTriggerWord("mm");
 		return request;
 	}
+	
 }
