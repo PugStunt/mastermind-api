@@ -2,6 +2,8 @@ package com.pugstunt.mastermind.service.bot.slack.handler;
 
 import static java.lang.System.lineSeparator;
 
+import java.util.List;
+
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
@@ -13,44 +15,39 @@ import com.pugstunt.mastermind.service.GameService;
 
 public class SlackHandlerGuess implements SlackHandler {
 
-	private static final String COMMAND = "guess";
-
+	private static final String[] COMMANDS = {"guess", "my guess", "i guess"};
 
 	private GameService gameService;
 
 	@Inject
 	public SlackHandlerGuess(GameService gameService) {
 		this.gameService = gameService;
-
 	}
 
 	@Override
 	public boolean accept(String message) {
-		return message.startsWith(COMMAND);
+		for (String command : COMMANDS) {
+			if (message.startsWith(command)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
 	public SlackResponse apply(SlackRequest slackRequest) {
 
+		String[] splittedCommand = slackRequest.getText().split(" ");
+		String guess = splittedCommand[splittedCommand.length - 1];
+		List<Color> colors = Color.from(guess);
 		String gameKey = gameService.buildKey(slackRequest.getKeyBase());
+		GameEntry game = gameService.checkGuess(gameKey, colors);
 
-		String command = slackRequest.getText();
-		String guess;
-		if (command.startsWith(COMMAND)) {
-			String[] splittedCommand = slackRequest.getText().split(" ");
-			if (splittedCommand.length < 2) {
-				return new SlackResponse("Invalid Guess");
-			}
-			guess = splittedCommand[1];
-		} else {
-			guess = command;
-		}
 		try {
-			GameEntry game = gameService.checkGuess(gameKey, Color.from(guess));
 			return new SlackResponse(responseText(game));
-		} catch(MastermindException mex) {
+		} catch (MastermindException mex) {
 			return new SlackResponse("No active game");
-		} catch(IllegalArgumentException ex) {
+		} catch (IllegalArgumentException ex) {
 			return new SlackResponse("Invalid Guess");
 		}
 	}
@@ -65,7 +62,7 @@ public class SlackHandlerGuess implements SlackHandler {
 			.append(lineSeparator())
 			.append("Past Results: [")
 			.append(lineSeparator());
-		
+
 		for (PastResult pastResult : game.getPastResults()) {
 			builder
 				.append("{ Exact: ").append(pastResult.getExact())

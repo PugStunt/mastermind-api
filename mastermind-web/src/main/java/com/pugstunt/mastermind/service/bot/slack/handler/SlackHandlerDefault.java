@@ -24,7 +24,7 @@ public class SlackHandlerDefault implements SlackHandler {
 	public SlackResponse apply(SlackRequest request) {
 
 		try {
-			Color.from(request.getTextWithouTrigger().replaceAll("\\s", ""));
+			Color.from(request.getTextWithouTrigger());
 			return slackHandlerGuess.apply(request);
 		} catch (Exception e) {
 			return new SlackResponse("Didn't understand, captain. Use 'help' command for further instructions.");
