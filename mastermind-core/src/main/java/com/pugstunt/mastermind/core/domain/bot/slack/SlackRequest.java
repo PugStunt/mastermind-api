@@ -7,7 +7,7 @@ public class SlackRequest {
 	private String token;
 
 	@JsonProperty("team_id")
-	private String teamDd;
+	private String teamId;
 
 	@JsonProperty("team_domain")
 	private String teamDomain;
@@ -39,12 +39,12 @@ public class SlackRequest {
 		this.token = token;
 	}
 
-	public String getTeamDd() {
-		return teamDd;
+	public String getTeamId() {
+		return teamId;
 	}
 
-	public void setTeamDd(String teamDd) {
-		this.teamDd = teamDd;
+	public void setTeamId(String teamId) {
+		this.teamId = teamId;
 	}
 
 	public String getTeamDomain() {
@@ -96,6 +96,14 @@ public class SlackRequest {
 	}
 
 	public String getText() {
+		return text;
+	}
+
+	public String getTextWithouTrigger() {
+		if(text.indexOf(triggerWord) == 0){
+			return text.substring(triggerWord.length());
+		}
+		
 		return text;
 	}
 
