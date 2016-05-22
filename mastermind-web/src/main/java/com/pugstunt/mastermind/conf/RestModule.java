@@ -10,7 +10,6 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJsonProvider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.pugstunt.mastermind.core.domain.ErrorResponse;
-import com.pugstunt.mastermind.exception.MastermindException;
 import com.sun.jersey.api.core.PackagesResourceConfig;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.sun.jersey.guice.JerseyServletModule;
@@ -41,10 +40,10 @@ public class RestModule extends JerseyServletModule {
 	}
 	
 	@Provider
-	public static class MastermindExceptionMapper implements ExceptionMapper<MastermindException> {
+	public static class MastermindExceptionMapper implements ExceptionMapper<RuntimeException> {
 
 		@Override
-		public Response toResponse(MastermindException ex) {
+		public Response toResponse(RuntimeException ex) {
 			
 			ErrorResponse response = new ErrorResponse();
 			response.setStatus("Internal Server Error");

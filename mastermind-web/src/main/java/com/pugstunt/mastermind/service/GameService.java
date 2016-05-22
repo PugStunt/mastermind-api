@@ -13,12 +13,14 @@ import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
+import com.pugstunt.mastermind.exception.MastermindException;
 import com.pugstunt.mastermind.store.GameStore;
 
 public class GameService {
 	
 	private static final int CODE_LENGTH = 8;
-	private static final long GAME_TIME = TimeUnit.MINUTES.toSeconds(5);
+	public static final long GAME_DURATION_TIME = System.getProperty("game.duration.milliseconds") != null ?
+		Long.valueOf(System.getProperty("game.duration.milliseconds")) : TimeUnit.MINUTES.toMillis(5);
 	
 	private final GameStore gameStore;
 	
@@ -69,7 +71,7 @@ public class GameService {
 			return currentGame;
 		}
 		
-		throw new RuntimeException();
+		throw new MastermindException("User Session Not Found");
 	}
 	
 	private GameEntry check(GameEntry game, List<Color> guess) {
@@ -137,7 +139,7 @@ public class GameService {
 	
 	private boolean isActive(GameEntry game) {
 		final long currentTime = new Date().getTime();
-		return game.isActive() && TimeUnit.MILLISECONDS.toMinutes(currentTime - game.getStartTime()) < GAME_TIME;
+		return currentTime - game.getStartTime() < GAME_DURATION_TIME;
 	}
 
 }
