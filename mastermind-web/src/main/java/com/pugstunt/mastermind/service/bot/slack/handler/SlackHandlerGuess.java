@@ -9,7 +9,7 @@ import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.bot.slack.SlackService;
+import com.pugstunt.mastermind.service.SlackService;
 
 public class SlackHandlerGuess implements SlackHandler {
 

@@ -1,4 +1,4 @@
-package com.pugstunt.mastermind.service.bot.slack;
+package com.pugstunt.mastermind.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
