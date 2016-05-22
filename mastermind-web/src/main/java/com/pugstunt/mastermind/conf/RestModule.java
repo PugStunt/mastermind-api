@@ -55,7 +55,7 @@ public class RestModule extends JerseyServletModule {
 			
 			ErrorResponse response = new ErrorResponse();
 			response.setStatus("Internal Server Error");
-			response.setMessage(ex.getMessage());
+			response.setText(ex.getMessage());
 			return Response.status(500).entity(response).build();
 		}
 		
@@ -69,7 +69,7 @@ public class RestModule extends JerseyServletModule {
 			
 			ErrorResponse response = new ErrorResponse();
 			response.setStatus("Internal Server Error");
-			response.setMessage("No active game");
+			response.setText("No active game");
 			return Response.status(500).entity(response).build();
 		}
 		

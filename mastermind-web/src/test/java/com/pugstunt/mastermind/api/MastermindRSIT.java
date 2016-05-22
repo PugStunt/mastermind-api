@@ -114,7 +114,7 @@ public class MastermindRSIT {
 		then().
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
-			body("message", equalTo("No active game"));
+			body("text", equalTo("No active game"));
 	}
 	
 	@Test
@@ -133,7 +133,7 @@ public class MastermindRSIT {
 		then().
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
-			body("message", equalTo("Unknown color: 'A'"));
+			body("text", equalTo("Unknown color: 'A'"));
 	}
 	
 	@Test
@@ -152,7 +152,7 @@ public class MastermindRSIT {
 		then().
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
-			body("message", equalTo("Invalid size for guess. Expected: 8; Actual: 1"));
+			body("text", equalTo("Invalid size for guess. Expected: 8; Actual: 1"));
 	}
 	
 	@Test
@@ -170,7 +170,7 @@ public class MastermindRSIT {
 		then().
 			statusCode(HttpStatus.SC_INTERNAL_SERVER_ERROR).
 			body("status", equalTo("Internal Server Error")).
-			body("message", equalTo("Invalid guess"));
+			body("text", equalTo("Invalid guess"));
 	}
 	
 	private String getGameKey() {

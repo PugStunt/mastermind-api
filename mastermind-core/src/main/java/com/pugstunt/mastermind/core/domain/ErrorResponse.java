@@ -7,8 +7,8 @@ public class ErrorResponse {
 	@JsonProperty("status")
 	private String status;
 	
-	@JsonProperty("message")
-	private String message;
+	@JsonProperty("text")
+	private String text;
 
 	public String getStatus() {
 		return status;
@@ -18,12 +18,12 @@ public class ErrorResponse {
 		this.status = status;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getText() {
+		return text;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setText(String text) {
+		this.text = text;
 	}
 	
 }
