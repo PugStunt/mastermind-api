@@ -2,12 +2,15 @@ package com.pugstunt.mastermind.service;
 
 import static java.util.stream.Collectors.joining;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.enums.Color;
@@ -63,15 +66,15 @@ public class GameService {
 	}
 	
 	public GameEntry checkGuess(String gameKey, List<Color> guess) {
-		
+
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
-		if (game.isPresent()) {
+
+		if (game.isPresent() && game.get().isActive()) {
 			final GameEntry currentGame = check(game.get(), guess);
 			gameStore.save(currentGame);
 			return currentGame;
 		}
-		
-		throw new MastermindException("User Session Not Found");
+		throw new MastermindException("No active game");
 	}
 	
 	private GameEntry check(GameEntry game, List<Color> guess) {
@@ -134,4 +137,12 @@ public class GameService {
 		return currentTime - game.getStartTime() < GAME_DURATION_TIME;
 	}
 
+	public String buildKey(String key) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			return new String(digest.digest(key.getBytes()), Charsets.UTF_8);
+		} catch (NoSuchAlgorithmException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
 }

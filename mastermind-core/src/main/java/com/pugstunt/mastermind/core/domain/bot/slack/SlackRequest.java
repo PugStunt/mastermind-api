@@ -119,5 +119,8 @@ public class SlackRequest {
 		this.triggerWord = triggerWord;
 	}
 
-	
+	public String getKeyBase() {
+		return getUserId() + getChannelId() + getTeamId();
+	}
+
 }

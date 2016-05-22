@@ -7,13 +7,16 @@ import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.pugstunt.mastermind.service.GameService;
 import com.pugstunt.mastermind.service.SlackService;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandler;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerDefault;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerFactory;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerGuess;
+import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerHelp;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerHint;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerNewGame;
+import com.pugstunt.mastermind.store.GameStore;
 
 public class SlackIntegrationModule extends AbstractModule {
 
@@ -25,38 +28,22 @@ public class SlackIntegrationModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	public List<SlackHandler> getHandlers() throws Exception {
+	public List<SlackHandler> getHandlers(GameService gameService, GameStore gameStore)
+			throws Exception {
 
 		final LinkedList<SlackHandler> handlers = Lists.newLinkedList();
-		handlers.add(handlerNewGame());
-		handlers.add(handlerGuess());
-		handlers.add(handlerHint());
-		handlers.add(handlerDefault());
+
+		SlackHandlerNewGame handlerNewGame = new SlackHandlerNewGame(gameService, gameStore);
+		SlackHandlerGuess handlerGuess = new SlackHandlerGuess(gameService);
+		SlackHandlerHint handlerHint = new SlackHandlerHint(gameService, gameStore);
+		SlackHandlerDefault handlerDefault = new SlackHandlerDefault(handlerGuess);
+		SlackHandlerHelp handlerHelp = new SlackHandlerHelp();
+		handlers.add(handlerNewGame);
+		handlers.add(handlerGuess);
+		handlers.add(handlerHint);
+		handlers.add(handlerDefault);
+		handlers.add(handlerHelp);
 		return handlers;
-	}
-
-	@Provides
-	@Singleton
-	public SlackHandlerNewGame handlerNewGame() {
-		return new SlackHandlerNewGame();
-	}
-
-	@Provides
-	@Singleton
-	public SlackHandlerGuess handlerGuess() {
-		return new SlackHandlerGuess();
-	}
-
-	@Provides
-	@Singleton
-	public SlackHandlerHint handlerHint() {
-		return new SlackHandlerHint();
-	}
-
-	@Provides
-	@Singleton
-	public SlackHandlerDefault handlerDefault() {
-		return new SlackHandlerDefault(handlerGuess());
 	}
 
 }
