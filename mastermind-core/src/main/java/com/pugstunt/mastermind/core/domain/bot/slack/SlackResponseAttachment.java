@@ -6,7 +6,7 @@ public class SlackResponseAttachment {
 	public static final String RED = "danger";
 	public static final String ORANGE = "warning";
 	public static final String GREEN = "good";
-	public static final String BLUE = "#006699";
+	public static final String BLUE = "#6699FF";
 	
 	@JsonProperty("color")
 	private String color;

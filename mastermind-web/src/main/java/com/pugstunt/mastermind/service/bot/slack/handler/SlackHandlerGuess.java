@@ -3,7 +3,6 @@ package com.pugstunt.mastermind.service.bot.slack.handler;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -73,7 +72,7 @@ public class SlackHandlerGuess implements SlackHandler {
 				.toString();
 		}
 
-		return StringUtils.EMPTY;
+		throw new IllegalStateException();
 	}
 
 }

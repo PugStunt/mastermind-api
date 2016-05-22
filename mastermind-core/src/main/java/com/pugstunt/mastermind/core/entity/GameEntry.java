@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 
@@ -131,6 +132,7 @@ public class GameEntry implements Serializable {
 				+ solved + "]";
 	}
 
+	@JsonIgnore
 	public Optional<PastResult> getLastResult() {
 		if(pastResults.isEmpty()){
 			return Optional.empty();
