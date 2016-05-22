@@ -1,6 +1,7 @@
 package com.pugstunt.mastermind.store.redis;
 
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +13,7 @@ import com.pugstunt.mastermind.store.GameStore;
 
 public class RedisGameStore implements GameStore {
 
+	private static final long TIME_TO_LIVE = TimeUnit.HOURS.toSeconds(1);
 	private final Supplier<RedisConnection<String, String>> connSupplier;
 	private final ObjectMapper mapper;
 	
@@ -25,12 +27,18 @@ public class RedisGameStore implements GameStore {
 	public void save(GameEntry game) {
 		final RedisConnection<String, String> connection = connSupplier.get();
 		try {
-			connection.set(game.getGameKey(), mapper.writeValueAsString(game));
+			connection.setex(game.getGameKey(), TIME_TO_LIVE, mapper.writeValueAsString(game));
 		} catch (JsonProcessingException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
-
+	
+	@Override
+	public void remove(String gameKey) {
+		final RedisConnection<String, String> connection = connSupplier.get();
+		connection.del(gameKey);
+	}
+	
 	@Override
 	public Optional<GameEntry> findByKey(String gameKey) {
 		final RedisConnection<String, String> connection = connSupplier.get();

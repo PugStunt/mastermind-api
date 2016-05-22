@@ -1,11 +1,11 @@
 package com.pugstunt.mastermind.service;
 
-import static java.util.UUID.randomUUID;
 import static java.util.stream.Collectors.joining;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.collect.Lists;
@@ -18,7 +18,7 @@ import com.pugstunt.mastermind.store.GameStore;
 public class GameService {
 	
 	private static final int CODE_LENGTH = 8;
-	private static final long TTL = TimeUnit.MINUTES.toSeconds(5);
+	private static final long GAME_TIME = TimeUnit.MINUTES.toSeconds(5);
 	
 	private final GameStore gameStore;
 	
@@ -27,23 +27,28 @@ public class GameService {
 		this.gameStore = gameStore;
 	}
 
-	public GameEntry newGame(String user) {
+	public GameEntry newGame(String player) {
+
+		return newGame(player, UUID.randomUUID().toString());
+	}
+	
+	public GameEntry newGame(String player, String gameKey) {
 		
 		final GameEntry game = 
-			GameEntry.builder(randomUUID().toString())
-				.playerName(user)
-				.guessesNumber(0)
-				.solved(false)
-				.answer(makeChallenge())
-				.startTime(new Date().getTime())
-				.active(true)
-				.build();
-		
-		gameStore.save(game);
-		
-		return game;
+				GameEntry.builder(gameKey)
+					.playerName(player)
+					.guessesNumber(0)
+					.solved(false)
+					.answer(makeChallenge())
+					.startTime(new Date().getTime())
+					.active(true)
+					.build();
+			
+			gameStore.save(game);
+			
+			return game;
 	}
-
+	
 	private List<Color> makeChallenge() {
 
 		final Color[] colors = Color.values();
@@ -129,10 +134,10 @@ public class GameService {
 				.build();
 		
 	}
-
+	
 	private boolean isActive(GameEntry game) {
 		final long currentTime = new Date().getTime();
-		return game.isActive() && TimeUnit.MILLISECONDS.toMinutes(currentTime - game.getStartTime()) < TTL;
+		return game.isActive() && TimeUnit.MILLISECONDS.toMinutes(currentTime - game.getStartTime()) < GAME_TIME;
 	}
 
 }

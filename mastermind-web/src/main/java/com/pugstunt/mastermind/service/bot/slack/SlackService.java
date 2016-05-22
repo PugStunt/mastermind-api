@@ -1,16 +1,20 @@
 package com.pugstunt.mastermind.service.bot.slack;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import com.google.api.client.util.Charsets;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
-import com.pugstunt.mastermind.service.bot.slack.handler.SlackHadlerFactory;
+import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerFactory;
 
 public class SlackService {
 	
-	private final SlackHadlerFactory handlerFactory;
+	private final SlackHandlerFactory handlerFactory;
 	
 	@Inject
-	public SlackService(SlackHadlerFactory handlerFactory) {
+	public SlackService(SlackHandlerFactory handlerFactory) {
 		this.handlerFactory = handlerFactory;		
 	}
 
@@ -20,4 +24,13 @@ public class SlackService {
 		return handlerFactory.getHandlerFor(message).apply(request);
 	}
 
+	public String buildKey(String userId, String channelId, String teamId) {
+		try {
+			MessageDigest digest = MessageDigest.getInstance("MD5");
+			return new String(digest.digest((userId + channelId + teamId).getBytes()), Charsets.UTF_8);
+		} catch (NoSuchAlgorithmException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
 }
