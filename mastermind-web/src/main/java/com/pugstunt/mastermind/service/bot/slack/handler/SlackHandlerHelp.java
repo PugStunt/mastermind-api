@@ -1,7 +1,5 @@
 package com.pugstunt.mastermind.service.bot.slack.handler;
 
-import static java.util.Objects.isNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -13,10 +11,12 @@ import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
 
 public class SlackHandlerHelp implements SlackHandler {
 
+	private static final String HELP = "help";
+
 	@Override
 	public boolean accept(String message) {
 
-		return !isNull(message) && message.toLowerCase().startsWith("help");
+		return message.toLowerCase().startsWith(HELP);
 	}
 
 	@Override

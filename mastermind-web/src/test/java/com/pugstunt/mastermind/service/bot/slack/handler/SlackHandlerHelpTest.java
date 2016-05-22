@@ -21,7 +21,6 @@ public class SlackHandlerHelpTest {
 	public void acceptanceTest() {
 
 		SlackHandlerHelp handler = new SlackHandlerHelp();
-		assertFalse(handler.accept(null));
 		assertFalse(handler.accept(""));
 		assertFalse(handler.accept("new game"));
 		assertFalse(handler.accept("newgame"));
