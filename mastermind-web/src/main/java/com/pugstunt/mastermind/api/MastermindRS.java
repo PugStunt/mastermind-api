@@ -1,7 +1,5 @@
 package com.pugstunt.mastermind.api;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -15,7 +13,6 @@ import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.GuessRequest;
 import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.domain.enums.Color;
-import com.pugstunt.mastermind.core.domain.enums.ColorTransformer;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
 import com.pugstunt.mastermind.transformers.GuessTransformer;
