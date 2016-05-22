@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,7 +18,6 @@ public class ImageService {
 
 	private static final int IMG_HEIGHT = 50;
 	private static final int IMG_WIDTH = 50;
-
 	private static final int OFFSET = 5;
 
 	/**
@@ -47,6 +47,18 @@ public class ImageService {
 					IMG_HEIGHT / 2 + 8);
 		}
 		graphics.dispose();
+
+		return imageToBytes(img);
+	}
+
+	public byte[] fallbackImage(String code) throws IOException {
+
+		BufferedImage img = ImageIO
+				.read(new File(ImageService.class.getResource("image/invalidImageCode.png").getPath()));
+		return imageToBytes(img);
+	}
+
+	private byte[] imageToBytes(BufferedImage img) throws IOException {
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ImageIO.write(img, "png", baos);
