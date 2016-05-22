@@ -16,7 +16,6 @@ import com.pugstunt.mastermind.transformers.ColorTransformer;
 
 public class ImageService {
 
-	private static final String FALLBACK_IMAGE_PATH = "../image/invalidImageCode.jpg";
 	private static final int IMG_HEIGHT = 50;
 	private static final int IMG_WIDTH = 50;
 	private static final int OFFSET = 5;
@@ -54,10 +53,8 @@ public class ImageService {
 
 	public byte[] fallbackImage(String code) throws IOException {
 
-//		BufferedImage img = ImageIO.read(new File(FALLBACK_IMAGE_PATH));
-		ImageService.class.getResource("resources/images/invalidImageCode.jpg");
-		ImageService.class.getResource(".").getPath();
-		BufferedImage img = ImageIO.read(new File(ImageService.class.getResource("resources/images/invalidImageCode.jpg").getPath()));
+		BufferedImage img = ImageIO
+				.read(new File(ImageService.class.getResource("image/invalidImageCode.png").getPath()));
 		return imageToBytes(img);
 	}
 
