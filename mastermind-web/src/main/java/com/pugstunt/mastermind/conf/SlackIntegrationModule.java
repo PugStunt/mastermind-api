@@ -7,7 +7,7 @@ import com.google.common.collect.Lists;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
-import com.pugstunt.mastermind.service.bot.slack.SlackService;
+import com.pugstunt.mastermind.service.SlackService;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandler;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerDefault;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerFactory;
