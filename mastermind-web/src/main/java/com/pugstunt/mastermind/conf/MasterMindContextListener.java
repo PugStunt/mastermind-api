@@ -8,7 +8,14 @@ public class MasterMindContextListener extends GuiceServletContextListener {
 
 	@Override
 	protected Injector getInjector() {
-		return Guice.createInjector(new MastermindLocal());
+		
+		final String environment = System.getenv("environment");
+		if ("local".equals(environment)) {
+			System.out.println("local module");
+			return Guice.createInjector(new MastermindLocal());
+		}
+		System.out.println("production module");
+		return Guice.createInjector(new MastermindProduction());
 	}
 
 }
