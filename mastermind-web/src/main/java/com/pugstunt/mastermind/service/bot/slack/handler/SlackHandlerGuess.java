@@ -1,33 +1,39 @@
 package com.pugstunt.mastermind.service.bot.slack.handler;
 
-import static java.lang.System.lineSeparator;
-
 import java.util.List;
+import java.util.Optional;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
+import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
 import com.pugstunt.mastermind.exception.MastermindException;
 import com.pugstunt.mastermind.service.GameService;
+import com.sun.jersey.api.core.HttpRequestContext;
 
 public class SlackHandlerGuess implements SlackHandler {
 
-	private static final String[] COMMANDS = {"guess", "my guess", "i guess"};
+	private static final String[] COMMANDS = { "guess", "my guess", "i guess" };
 
 	private GameService gameService;
 
+	private HttpRequestContext context;
+
 	@Inject
-	public SlackHandlerGuess(GameService gameService) {
+	public SlackHandlerGuess(GameService gameService, HttpRequestContext context) {
 		this.gameService = gameService;
+		this.context = context;
 	}
 
 	@Override
 	public boolean accept(String message) {
 		for (String command : COMMANDS) {
-			if (message.startsWith(command)) {
+			if (message.toLowerCase().startsWith(command)) {
 				return true;
 			}
 		}
@@ -35,7 +41,7 @@ public class SlackHandlerGuess implements SlackHandler {
 	}
 
 	@Override
-	public SlackResponse apply(SlackRequest slackRequest) {
+	public SlackResponse apply(SlackRequest slackRequest) throws MastermindException {
 
 		String[] splittedCommand = slackRequest.getText().split(" ");
 		String guess = splittedCommand[splittedCommand.length - 1];
@@ -43,38 +49,29 @@ public class SlackHandlerGuess implements SlackHandler {
 		String gameKey = gameService.buildKey(slackRequest.getKeyBase());
 		GameEntry game = gameService.checkGuess(gameKey, colors);
 
-		try {
-			return new SlackResponse(responseText(game));
-		} catch (MastermindException mex) {
-			return new SlackResponse("No active game");
-		} catch (IllegalArgumentException ex) {
-			return new SlackResponse("Invalid Guess");
-		}
+		SlackResponse response = new SlackResponse();
+		SlackResponseAttachment attachment = SlackResponseAttachment.info(responseText(game, guess));
+		String domain = context.getRequestUri().toString();
+		attachment.setImageUrl(domain + "/v1/image/" + guess.toUpperCase() + ".png");
+		response.getAttachments().add(attachment);
+
+		return response;
 	}
 
-	private String responseText(GameEntry game) {
+	private String responseText(GameEntry game, String guess) {
+		Optional<PastResult> lastResult = game.getLastResult();
 
-		StringBuilder builder = new StringBuilder();
-		builder
-			.append("User: ").append(game.getPlayer())
-			.append(lineSeparator())
-			.append("Guesses: ").append(game.getGuesses())
-			.append(lineSeparator())
-			.append("Past Results: [")
-			.append(lineSeparator());
-
-		for (PastResult pastResult : game.getPastResults()) {
-			builder
-				.append("{ Exact: ").append(pastResult.getExact())
-				.append(", Near: ").append(pastResult.getNear())
-				.append(", Guess: ").append(pastResult.getGuess())
-				.append(" }")
-				.append(lineSeparator());
+		if (lastResult.isPresent()) {
+			PastResult result = lastResult.get();
+			
+			return new StringBuilder()
+				.append("Exact: ").append(result.getExact())
+				.append(" | ")
+				.append("Near: ").append(result.getNear())
+				.toString();
 		}
 
-		builder.append("]");
-
-		return builder.toString();
+		return StringUtils.EMPTY;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.pugstunt.mastermind.core.entity;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.common.collect.Lists;
 import com.pugstunt.mastermind.core.domain.enums.Color;
@@ -128,6 +129,14 @@ public class GameEntry implements Serializable {
 	public String toString() {
 		return "GameEntry [player=" + player + ", guesses=" + guesses + ", pastResults=" + pastResults + ", solved="
 				+ solved + "]";
+	}
+
+	public Optional<PastResult> getLastResult() {
+		if(pastResults.isEmpty()){
+			return Optional.empty();
+		}
+		
+		return Optional.of(pastResults.get(pastResults.size() - 1));
 	}
 	
 }

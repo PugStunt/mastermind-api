@@ -46,7 +46,7 @@ public class SlackHandlerNewGame implements SlackHandler {
 			finishGame(game.get());
 		}
 		gameService.newGame(slackRequest.getUsername(), gameKey);
-		return new SlackResponse(GAME_STARTED_MESSAGE + " - " + slackRequest.getUsername());
+		return SlackResponse.success(GAME_STARTED_MESSAGE + " - " + slackRequest.getUsername());
 	}
 
 	private void finishGame(GameEntry game) {

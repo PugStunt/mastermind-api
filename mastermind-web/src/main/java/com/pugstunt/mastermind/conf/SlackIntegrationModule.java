@@ -17,6 +17,7 @@ import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerHelp;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerHint;
 import com.pugstunt.mastermind.service.bot.slack.handler.SlackHandlerNewGame;
 import com.pugstunt.mastermind.store.GameStore;
+import com.sun.jersey.api.core.HttpRequestContext;
 
 public class SlackIntegrationModule extends AbstractModule {
 
@@ -28,13 +29,13 @@ public class SlackIntegrationModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	public List<SlackHandler> getHandlers(GameService gameService, GameStore gameStore)
+	public List<SlackHandler> getHandlers(GameService gameService, GameStore gameStore, HttpRequestContext context)
 			throws Exception {
 
 		final LinkedList<SlackHandler> handlers = Lists.newLinkedList();
 
 		SlackHandlerNewGame handlerNewGame = new SlackHandlerNewGame(gameService, gameStore);
-		SlackHandlerGuess handlerGuess = new SlackHandlerGuess(gameService);
+		SlackHandlerGuess handlerGuess = new SlackHandlerGuess(gameService, context);
 		SlackHandlerHint handlerHint = new SlackHandlerHint(gameService, gameStore);
 		SlackHandlerDefault handlerDefault = new SlackHandlerDefault(handlerGuess);
 		SlackHandlerHelp handlerHelp = new SlackHandlerHelp();

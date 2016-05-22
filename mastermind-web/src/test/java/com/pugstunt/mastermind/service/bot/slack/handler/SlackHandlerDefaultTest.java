@@ -2,6 +2,7 @@ package com.pugstunt.mastermind.service.bot.slack.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -31,7 +32,10 @@ public class SlackHandlerDefaultTest {
 		SlackRequest request = buildRequest("AAAAA");
 
 		SlackResponse response = new SlackHandlerDefault(null).apply(request);
-		String text = response.getText();
+		assertNotNull(response.getAttachments());
+		assertEquals(1, response.getAttachments().size());
+		
+		String text = response.getAttachments().get(0).getText();
 
 		assertEquals("Didn't understand, captain. Use 'help' command for further instructions.", text);
 	}
@@ -54,7 +58,10 @@ public class SlackHandlerDefaultTest {
 		SlackRequest request = buildRequest("R G B R G B R G");
 
 		SlackResponse response = new SlackHandlerDefault(null).apply(request);
-		String text = response.getText();
+		assertNotNull(response.getAttachments());
+		assertEquals(1, response.getAttachments().size());
+		
+		String text = response.getAttachments().get(0).getText();
 
 		assertEquals("Didn't understand, captain. Use 'help' command for further instructions.", text);
 	}

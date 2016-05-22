@@ -8,6 +8,7 @@ import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
+import com.pugstunt.mastermind.exception.GameNotFoundException;
 import com.pugstunt.mastermind.service.GameService;
 import com.pugstunt.mastermind.store.GameStore;
 
@@ -28,9 +29,9 @@ public class SlackHandlerHint implements SlackHandler {
 
 		return message.startsWith("hint") || message.startsWith("suggestion");
 	}
-
+ 
 	@Override
-	public SlackResponse apply(SlackRequest request) {
+	public SlackResponse apply(SlackRequest request) throws GameNotFoundException {
 
 		final Optional<GameEntry> game = gameStore.findByKey(gameService.buildKey(request.getKeyBase()));
 
@@ -38,11 +39,16 @@ public class SlackHandlerHint implements SlackHandler {
 			Random r = new Random();
 			int randomPos = r.nextInt(8);
 			Color color = game.get().getAnswer().get(randomPos);
-			StringBuilder sb = new StringBuilder();
-			return new SlackResponse(sb.append("Hint: The correct color for position ").append(randomPos + 1)
-					.append(" is ").append(color.name()).toString());
+			String text = new StringBuilder()
+					.append("Hint: The correct color for position ")
+					.append(randomPos + 1)
+					.append(" is ").append(color.name())
+					.toString();
+
+			return SlackResponse.info(text);
 		}
-		return new SlackResponse("Sorry, no active game. Y U No start a new one? ;)");
+		
+		throw new GameNotFoundException();
 	}
 
 }

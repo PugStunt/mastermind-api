@@ -29,7 +29,7 @@ public class SlackRequest {
 	private String text;
 
 	@JsonProperty("trigger_word")
-	private String triggerWord;
+	private String triggerWord = "";
 
 	public String getToken() {
 		return token;

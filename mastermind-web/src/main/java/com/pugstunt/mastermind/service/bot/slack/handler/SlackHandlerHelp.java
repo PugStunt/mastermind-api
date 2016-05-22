@@ -8,6 +8,7 @@ import java.util.List;
 import com.google.common.io.Files;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
+import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 
 public class SlackHandlerHelp implements SlackHandler {
 
@@ -21,7 +22,14 @@ public class SlackHandlerHelp implements SlackHandler {
 
 	@Override
 	public SlackResponse apply(SlackRequest request) {
+		SlackResponse response = new SlackResponse();
+		
+		response.getAttachments().add(SlackResponseAttachment.info(loadHelpText()));		
+		
+		return response;
+	}
 
+	private String loadHelpText() {
 		StringBuilder sb = new StringBuilder();
 		try {
 			List<String> readLines = Files.readLines(new File(SlackHandlerHelp.class.getResource("help.txt").getPath()),
@@ -29,7 +37,8 @@ public class SlackHandlerHelp implements SlackHandler {
 			readLines.forEach(line -> sb.append(line).append(System.lineSeparator()));
 		} catch (IOException e) {
 		}
-		return new SlackResponse(sb.toString());
+		String text = sb.toString();
+		return text;
 	}
 
 }
