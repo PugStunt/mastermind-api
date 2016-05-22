@@ -17,7 +17,6 @@ public class MasterMindContextListener extends GuiceServletContextListener {
 		final String environment = System.getenv("environment");
 		if ("local".equals(environment)) {
 			logger.info("Starting env={} with injector MastermindLocal", environment);
-			System.out.println("local module");
 			return Guice.createInjector(new MastermindLocal());
 		}
 		logger.info("Starting env={} with injector ProductionModule", environment);
