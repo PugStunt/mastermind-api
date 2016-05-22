@@ -3,7 +3,7 @@ package com.pugstunt.mastermind.service.bot.slack;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.google.api.client.util.Charsets;
+import com.google.common.base.Charsets;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;

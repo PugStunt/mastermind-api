@@ -1,7 +1,5 @@
 package com.pugstunt.mastermind.service.bot.slack.handler;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
 import com.google.inject.Inject;
@@ -12,7 +10,6 @@ import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
 import com.pugstunt.mastermind.service.GameService;
 import com.pugstunt.mastermind.service.bot.slack.SlackService;
-import com.pugstunt.mastermind.transformers.ColorTransformer;
 
 public class SlackHandlerGuess implements SlackHandler {
 
@@ -44,10 +41,7 @@ public class SlackHandlerGuess implements SlackHandler {
 
 	private List<Color> parseColors(String phrase) {
 		
-		return phrase.split(" ")[1]
-			.chars()
-			.mapToObj(new ColorTransformer())
-			.collect(toList());
+		return Color.from(phrase.split(" ")[1]);
 	}
 	
 	private String responseText(GameEntry game) {
