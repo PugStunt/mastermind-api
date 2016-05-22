@@ -4,17 +4,22 @@ import static java.lang.System.lineSeparator;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
-import com.pugstunt.mastermind.exception.MastermindException;
+import com.pugstunt.mastermind.exception.NoActiveGameException;
 import com.pugstunt.mastermind.service.GameService;
 
 public class SlackHandlerGuess implements SlackHandler {
 
+	static final Logger logger = LoggerFactory.getLogger(SlackHandlerGuess.class);
+	
 	private static final String[] COMMANDS = {"guess", "my guess", "i guess"};
 
 	private GameService gameService;
@@ -37,17 +42,19 @@ public class SlackHandlerGuess implements SlackHandler {
 	@Override
 	public SlackResponse apply(SlackRequest slackRequest) {
 
-		String[] splittedCommand = slackRequest.getText().split(" ");
-		String guess = splittedCommand[splittedCommand.length - 1];
-		List<Color> colors = Color.from(guess);
-		String gameKey = gameService.buildKey(slackRequest.getKeyBase());
-		GameEntry game = gameService.checkGuess(gameKey, colors);
+		final String[] splittedCommand = slackRequest.getText().split(" ");
+		final String guess = splittedCommand[splittedCommand.length - 1];
+		final List<Color> colors = Color.from(guess);
+		final String gameKey = gameService.buildKey(slackRequest.getKeyBase());
+		final GameEntry game = gameService.checkGuess(gameKey, colors);
 
 		try {
 			return new SlackResponse(responseText(game));
-		} catch (MastermindException mex) {
+		} catch (NoActiveGameException ex) {
+			logger.info("No active game found for gameKey={}", gameKey);
 			return new SlackResponse("No active game");
 		} catch (IllegalArgumentException ex) {
+			logger.info("Invalid guess code {}", guess);
 			return new SlackResponse("Invalid Guess");
 		}
 	}

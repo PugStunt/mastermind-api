@@ -18,6 +18,9 @@ public class ImageService {
 	private static final int IMG_WIDTH = 50;
 	private static final int OFFSET = 5;
 
+	private static final Font RESPONSE_IMAGE_FONT = new Font("Consolas", Font.BOLD, 20);
+	private static final String INVALID_CODE_IMAGE = "image/invalidImageCode.png";
+	
 	/**
 	 * Receives a simple string with color values and returns an image according
 	 * to the given colors
@@ -33,7 +36,7 @@ public class ImageService {
 		BufferedImage img = new BufferedImage((IMG_WIDTH + OFFSET) * colors.size(), IMG_HEIGHT,
 				BufferedImage.TYPE_INT_ARGB);
 		Graphics2D graphics = img.createGraphics();
-		graphics.setFont(new Font("Consolas", Font.BOLD, 20));
+		graphics.setFont(RESPONSE_IMAGE_FONT);
 
 		for (int i = 0; i < colors.size(); i++) {
 			Color color = colors.get(i);
@@ -51,18 +54,19 @@ public class ImageService {
 	public byte[] fallbackImage(String code) throws IOException {
 
 		BufferedImage img = ImageIO
-				.read(new File(ImageService.class.getResource("image/invalidImageCode.png").getPath()));
+				.read(new File(ImageService.class.getResource(INVALID_CODE_IMAGE).getPath()));
 		return imageToBytes(img);
 	}
 
 	private byte[] imageToBytes(BufferedImage img) throws IOException {
 
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ImageIO.write(img, "png", baos);
-		baos.flush();
-		byte[] imageInByte = baos.toByteArray();
-		baos.close();
-		return imageInByte;
+		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+			ImageIO.write(img, "png", baos);
+			baos.flush();
+			byte[] imageInByte = baos.toByteArray();
+			return imageInByte;
+		}
+		
 	}
 
 }

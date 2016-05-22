@@ -10,16 +10,21 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Charsets;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
-import com.pugstunt.mastermind.exception.MastermindException;
+import com.pugstunt.mastermind.exception.NoActiveGameException;
 import com.pugstunt.mastermind.store.GameStore;
 
 public class GameService {
+
+	static final Logger logger = LoggerFactory.getLogger(GameService.class);
 	
 	private static final int CODE_LENGTH = 8;
 	public static final long GAME_DURATION_TIME = System.getProperty("game.duration.milliseconds") != null ?
@@ -33,7 +38,7 @@ public class GameService {
 	}
 
 	public GameEntry newGame(String player) {
-
+		
 		return newGame(player, UUID.randomUUID().toString());
 	}
 	
@@ -70,11 +75,13 @@ public class GameService {
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
 
 		if (game.isPresent() && game.get().isActive()) {
+			logger.info("Active game found for gameKey={}, checking guess", gameKey);
 			final GameEntry currentGame = check(game.get(), guess);
 			gameStore.save(currentGame);
 			return currentGame;
 		}
-		throw new MastermindException("No active game");
+		logger.info("No active game for gameKey={}", gameKey);
+		throw new NoActiveGameException();
 	}
 	
 	private GameEntry check(GameEntry game, List<Color> guess) {
@@ -134,14 +141,18 @@ public class GameService {
 	
 	private boolean isActive(GameEntry game) {
 		final long currentTime = new Date().getTime();
-		return currentTime - game.getStartTime() < GAME_DURATION_TIME;
+		final boolean active = currentTime - game.getStartTime() < GAME_DURATION_TIME;
+		logger.info("GameKey={} is no longer active");
+		return active;
 	}
 
-	public String buildKey(String key) {
+	public String buildKey(String keyBase) {
+		logger.info("building gameKey using keyBase={}", keyBase);
 		try {
 			MessageDigest digest = MessageDigest.getInstance("MD5");
-			return new String(digest.digest(key.getBytes()), Charsets.UTF_8);
+			return new String(digest.digest(keyBase.getBytes()), Charsets.UTF_8);
 		} catch (NoSuchAlgorithmException ex) {
+			logger.error("An error occured while building gameKey using keyBase={}", keyBase, ex);
 			throw new RuntimeException(ex);
 		}
 	}
