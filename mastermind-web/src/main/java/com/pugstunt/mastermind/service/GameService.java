@@ -82,31 +82,23 @@ public class GameService {
 			
 			int exact = 0;
 			int near  = 0;
-		
-			final List<Color> nearAnswerList = Lists.newArrayList();
-			final List<Color> nearGuessList = Lists.newArrayList();
 			
-			for (int index = 0; index < answer.size(); index++) {
-				if (answer.get(index) == guess.get(index)) {
-					exact++;
-				} else {
-					nearAnswerList.add(answer.get(index));
-					nearGuessList.add(guess.get(index));
-				}
-			}
-			
-			for (Color nearGuess : nearGuessList) {
-				if (nearAnswerList.remove(nearGuess)) {
+			for (int i = 0; i < answer.size(); i++) {
+				if (guess.contains(answer.get(i))) {
 					near++;
+				}
+				
+				if (guess.get(i) == answer.get(i)) {
+					exact++;
 				}
 			}
 			
 			PastResult pastResult = 
 					PastResult.builder()
-					.exact(exact)
-					.guess(guess.stream().map(c -> String.valueOf(c.getValue())).collect(joining()))
-					.near(near)
-					.build();
+						.exact(exact)
+						.guess(guess.stream().map(c -> String.valueOf(c.getValue())).collect(joining()))
+						.near(near - exact)
+						.build();
 			
 			List<PastResult> pastResults = Lists.newArrayList();
 			pastResults.addAll(game.getPastResults());
