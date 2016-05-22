@@ -26,7 +26,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.hamcrest.Matchers;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
@@ -39,7 +38,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import com.google.common.collect.Lists;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
-import com.pugstunt.mastermind.exception.MastermindException;
+import com.pugstunt.mastermind.exception.GameNotFoundException;
 import com.pugstunt.mastermind.store.GameStore;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -331,9 +330,8 @@ public class GameServiceTest {
 	@Test
 	public void gameKeyNotFound() {
 		
-		expectedException.expect(MastermindException.class);
-		expectedException.expectMessage(Matchers.equalTo("No active game"));
-	
+		expectedException.expect(GameNotFoundException.class);
+		
 		when(store.findByKey("gameKey")).thenReturn(Optional.empty());
 		service.checkGuess("gameKey", newArrayList(RED, RED, BLUE, BLUE, ORANGE, ORANGE, CYAN, CYAN));
 	}
