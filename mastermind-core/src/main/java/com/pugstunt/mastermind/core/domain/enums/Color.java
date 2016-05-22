@@ -1,5 +1,10 @@
 package com.pugstunt.mastermind.core.domain.enums;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.function.IntFunction;
+import java.util.stream.Collectors;
+
 public enum Color {
 
 	RED('R', new java.awt.Color( 231, 76, 60)),
@@ -12,6 +17,7 @@ public enum Color {
 	MAGENTA('M', new java.awt.Color( 222, 107, 174));
 
 	private char value;
+
 	private java.awt.Color rgb;
 
 	private Color(char value, java.awt.Color rgb) {
@@ -27,7 +33,31 @@ public enum Color {
 		return rgb;
 	}
 
-	public static Color find(int c) {
+	public static List<Color> from(String guess) {
+
+		if (Objects.isNull(guess)) {
+			throw new IllegalArgumentException("Invalid guess");
+		}
+
+		if (values().length != guess.length()) {
+			throw new IllegalArgumentException(
+					"Invalid size for guess. Expected: " + values().length + "; Actual: " + guess.length());
+		}
+
+		List<Color> colors = guess.chars().mapToObj(new Transformer()).collect(Collectors.toList());
+		return colors;
+	}
+
+	private static class Transformer implements IntFunction<Color> {
+
+		@Override
+		public Color apply(int value) {
+
+			return Color.find(value);
+		}
+	}
+
+	private static Color find(int c) {
 
 		for (Color color : values()) {
 			if (color.getValue() == c) {
@@ -37,4 +67,5 @@ public enum Color {
 
 		throw new IllegalArgumentException("Color not found for key " + c);
 	}
+
 }

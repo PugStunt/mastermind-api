@@ -7,12 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import com.pugstunt.mastermind.core.domain.enums.Color;
-import com.pugstunt.mastermind.transformers.ColorTransformer;
 
 public class ImageService {
 
@@ -30,8 +28,7 @@ public class ImageService {
 	 */
 	public byte[] assembleResponseImage(String guessCode) throws IOException {
 
-		List<com.pugstunt.mastermind.core.domain.enums.Color> colors = guessCode.chars()
-				.mapToObj(new ColorTransformer()).collect(Collectors.toList());
+		List<Color> colors = Color.from(guessCode);
 
 		BufferedImage img = new BufferedImage((IMG_WIDTH + OFFSET) * colors.size(), IMG_HEIGHT,
 				BufferedImage.TYPE_INT_ARGB);
