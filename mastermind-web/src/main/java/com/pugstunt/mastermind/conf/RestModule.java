@@ -20,9 +20,9 @@ public class RestModule extends JerseyServletModule {
 			bind(resource);
 		}
 
-		filter("/*").through(CORSResponseFilter.class);
+		filter("/mastermind/*").through(CORSResponseFilter.class);
 		
-		serve("/*").with(GuiceContainer.class);
+		serve("/mastermind/*").with(GuiceContainer.class);
 
 	}
 
