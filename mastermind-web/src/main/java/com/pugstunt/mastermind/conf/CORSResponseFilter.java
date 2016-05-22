@@ -8,7 +8,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.ext.Provider;
 
@@ -25,13 +24,8 @@ public class CORSResponseFilter implements Filter {
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-
-		System.out.print("filtrando a parada");
 		
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-		
-		System.out.println("CLIENT_ORIGIN=" + httpRequest.getHeader("origin"));
 		
 		httpResponse.setHeader("Access-Control-Allow-Origin", "*");
 		httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST");

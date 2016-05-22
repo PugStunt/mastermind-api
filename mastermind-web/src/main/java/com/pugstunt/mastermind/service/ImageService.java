@@ -7,12 +7,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
 import com.pugstunt.mastermind.core.domain.enums.Color;
-import com.pugstunt.mastermind.core.domain.enums.ColorTransformer;
 
 public class ImageService {
 

@@ -15,16 +15,14 @@ public class RestModule extends JerseyServletModule {
 	@Override
 	protected void configureServlets() {
 		
-		bind(CorsFilter.class);
-		
 		final ResourceConfig rc = new PackagesResourceConfig("com.pugstunt.mastermind.api");
 		for (Class<?> resource : rc.getClasses()) {
 			bind(resource);
 		}
 
-		filter("/*").through(CORSResponseFilter.class);
+		filter("/mastermind/*").through(CORSResponseFilter.class);
 		
-		serve("/*").with(GuiceContainer.class);
+		serve("/mastermind/*").with(GuiceContainer.class);
 
 	}
 
