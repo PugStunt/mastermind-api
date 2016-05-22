@@ -34,14 +34,9 @@ public enum Color {
 	}
 
 	public static List<Color> from(String guess) {
-
+		
 		if (Objects.isNull(guess)) {
 			throw new IllegalArgumentException("Invalid guess");
-		}
-
-		if (values().length != guess.length()) {
-			throw new IllegalArgumentException(
-					"Invalid size for guess. Expected: " + values().length + "; Actual: " + guess.length());
 		}
 
 		List<Color> colors = guess.toUpperCase().chars().mapToObj(new Transformer()).collect(Collectors.toList());

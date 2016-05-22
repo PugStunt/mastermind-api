@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ import com.pugstunt.mastermind.store.GameStore;
 
 public class GameService {
 	
-	private static final int CODE_LENGTH = 8;
+	public static final int CODE_LENGTH = 8;
 	public static final long GAME_DURATION_TIME = System.getProperty("game.duration.milliseconds") != null ?
 		Long.valueOf(System.getProperty("game.duration.milliseconds")) : TimeUnit.MINUTES.toMillis(5);
 	
@@ -66,6 +67,8 @@ public class GameService {
 	}
 	
 	public GameEntry checkGuess(String gameKey, List<Color> guess) {
+		
+		validateGuess(guess);
 
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
 
@@ -76,10 +79,11 @@ public class GameService {
 		}
 		throw new MastermindException("No active game");
 	}
-	
+
 	private GameEntry check(GameEntry game, List<Color> guess) {
 		
 		final List<Color> answer = game.getAnswer();
+		final List<Color> remainingGuess = Lists.newArrayList(guess);
 		
 		if (isActive(game) && !game.isSolved()) {
 			
@@ -87,7 +91,7 @@ public class GameService {
 			int near  = 0;
 			
 			for (int i = 0; i < answer.size(); i++) {
-				if (guess.contains(answer.get(i))) {
+				if (remainingGuess.remove(answer.get(i))) {
 					near++;
 				}
 				
@@ -107,34 +111,46 @@ public class GameService {
 			pastResults.addAll(game.getPastResults());
 			pastResults.add(pastResult);
 			
-			return GameEntry
-					.builder(game.getGameKey())
-					.playerName(game.getPlayer())
+			return buildCommonGameEntryInfo(game)
 					.solved(exact == answer.size())
 					.active(game.isActive())
-					.answer(answer)
 					.guessesNumber(game.getGuesses() + 1)
 					.pastResults(pastResults)
-					.startTime(game.getStartTime())
 					.build();
 		}
 		
-		return GameEntry
-				.builder(game.getGameKey())
-				.playerName(game.getPlayer())
+		return buildCommonGameEntryInfo(game)
 				.solved(game.isSolved())
 				.active(false)
-				.answer(answer)
 				.guessesNumber(game.getGuesses())
 				.pastResults(game.getPastResults())
-				.startTime(game.getStartTime())
 				.build();
+	}
+	
+	private void validateGuess(List<Color> guess) {
+		
+		if (Objects.isNull(guess) || guess.isEmpty()) {
+			throw new IllegalArgumentException("Invalid guess");
+		}
+
+		if (CODE_LENGTH != guess.size()) {
+			throw new IllegalArgumentException(
+					"Invalid size for guess. Expected: " + CODE_LENGTH + "; Actual: " + guess.size());
+		}
 		
 	}
 	
 	private boolean isActive(GameEntry game) {
 		final long currentTime = new Date().getTime();
 		return currentTime - game.getStartTime() < GAME_DURATION_TIME;
+	}
+	
+	private GameEntry.Builder buildCommonGameEntryInfo(GameEntry game) {
+		
+		return GameEntry.builder(game.getGameKey())
+			.playerName(game.getPlayer())
+			.answer(game.getAnswer())
+			.startTime(game.getStartTime());
 	}
 
 	public String buildKey(String key) {
