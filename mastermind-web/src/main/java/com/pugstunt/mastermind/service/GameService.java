@@ -78,7 +78,7 @@ public class GameService {
 		
 		final List<Color> answer = game.getAnswer();
 		
-		if (isActive(game)) {
+		if (isActive(game) && !game.isSolved()) {
 			
 			int exact = 0;
 			int near  = 0;

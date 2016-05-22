@@ -38,7 +38,7 @@ public class GuessTransformer implements Function<GameEntry, GameResponse>{
 		response.setCodeLength(game.getAnswer().size());
 		
 		if (!game.isActive()) {
-			response.setResult("This game has expired (5 minutes window). Please start a new game.");
+			response.setResult("This game has expired. Please start a new game.");
 		} else if (game.isSolved()) {
 			
 			final long currentTime = new Date().getTime();
