@@ -4,7 +4,7 @@ public class RedisLocal implements ConnectionRedis {
 
 	@Override
 	public String get() {
-		return "redis://localhost@6379";
+		return "redis://localhost:6379";
 	}
 
 }
