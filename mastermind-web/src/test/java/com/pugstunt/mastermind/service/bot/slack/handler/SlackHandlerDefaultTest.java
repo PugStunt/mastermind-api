@@ -49,15 +49,14 @@ public class SlackHandlerDefaultTest {
 	}
 
 	@Test
-	public void guessOnlySpacedMessageTest() {
+	public void guessInvalidSpacedMessageTest() {
 
 		SlackRequest request = buildRequest("R G B R G B R G");
 
-		SlackHandlerGuess handlerGuess = Mockito.mock(SlackHandlerGuess.class);
-		Mockito.when(handlerGuess.apply(request)).thenReturn(null);
+		SlackResponse response = new SlackHandlerDefault(null).apply(request);
+		String text = response.getText();
 
-		new SlackHandlerDefault(handlerGuess).apply(request);
-		Mockito.verify(handlerGuess).apply(request);
+		assertEquals("Didn't understand, captain. Use 'help' command for further instructions.", text);
 	}
 
 	private SlackRequest buildRequest(String text) {
