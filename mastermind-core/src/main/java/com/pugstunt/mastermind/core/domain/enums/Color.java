@@ -7,12 +7,17 @@ import java.util.stream.Collectors;
 
 public enum Color {
 
-	RED('R', new java.awt.Color(231, 76, 60)), GREEN('G', new java.awt.Color(46, 204, 113)), BLUE('B',
-			new java.awt.Color(52, 152, 219)), YELLOW('Y', new java.awt.Color(241, 196, 15)), ORANGE('O',
-					new java.awt.Color(230, 126, 34)), PURPLE('P', new java.awt.Color(155, 89, 182)), CYAN('C',
-							new java.awt.Color(26, 188, 156)), MAGENTA('M', new java.awt.Color(222, 107, 174));
+	RED('R', new java.awt.Color( 231, 76, 60)),
+	GREEN('G', new java.awt.Color( 46, 204, 113)),
+	BLUE('B', new java.awt.Color( 52, 152, 219)),
+	YELLOW('Y', new java.awt.Color( 241, 196, 15)),
+	ORANGE('O', new java.awt.Color( 230, 126, 34)),
+	PURPLE('P', new java.awt.Color( 155, 89, 182)),
+	CYAN('C', new java.awt.Color( 26, 188, 156)),
+	MAGENTA('M', new java.awt.Color( 222, 107, 174));
 
 	private char value;
+
 	private java.awt.Color rgb;
 
 	private Color(char value, java.awt.Color rgb) {
@@ -26,17 +31,6 @@ public enum Color {
 
 	public java.awt.Color getRgb() {
 		return rgb;
-	}
-
-	public static Color find(int c) {
-
-		for (Color color : values()) {
-			if (color.getValue() == c) {
-				return color;
-			}
-		}
-
-		throw new IllegalArgumentException("Color not found for key " + c);
 	}
 
 	public static List<Color> from(String guess) {
@@ -54,13 +48,24 @@ public enum Color {
 		return colors;
 	}
 
-	public static class Transformer implements IntFunction<Color> {
+	private static class Transformer implements IntFunction<Color> {
 
 		@Override
 		public Color apply(int value) {
 
 			return Color.find(value);
 		}
-
 	}
+
+	private static Color find(int c) {
+
+		for (Color color : values()) {
+			if (color.getValue() == c) {
+				return color;
+			}
+		}
+
+		throw new IllegalArgumentException("Color not found for key " + c);
+	}
+
 }
