@@ -18,8 +18,8 @@ import com.google.inject.Singleton;
 public class CORSResponseFilter implements Filter {
 
 	@Override
-	public void destroy() {
-
+	public void init(FilterConfig filterConfig) throws ServletException {
+		
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class CORSResponseFilter implements Filter {
 	}
 
 	@Override
-	public void init(FilterConfig arg0) throws ServletException {
+	public void destroy() {
 		
 	}
 

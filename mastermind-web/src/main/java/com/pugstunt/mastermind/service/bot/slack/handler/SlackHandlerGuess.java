@@ -34,14 +34,18 @@ public class SlackHandlerGuess implements SlackHandler {
 		String teamId = slackRequest.getTeamId();
 
 		String gameKey = slackService.buildKey(userId, channelId, teamId);
-		GameEntry game = gameService.checkGuess(gameKey, parseColors(slackRequest.getText()));
+		
+		String[] splittedCommand = slackRequest.getText().split(" ");
+		if (splittedCommand.length < 2) {
+			return new SlackResponse("Invalid Guess");
+		}
+		GameEntry game = gameService.checkGuess(gameKey, parseColors(splittedCommand[1]));
 		
 		return new SlackResponse(responseText(game));
 	}
 
-	private List<Color> parseColors(String phrase) {
-		
-		return Color.from(phrase.split(" ")[1]);
+	private List<Color> parseColors(String guess) {
+		return Color.from(guess);
 	}
 	
 	private String responseText(GameEntry game) {
