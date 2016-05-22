@@ -1,7 +1,5 @@
 package com.pugstunt.mastermind.api;
 
-import static java.util.stream.Collectors.toList;
-
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -17,7 +15,6 @@ import com.pugstunt.mastermind.core.domain.NewGameRequest;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.transformers.ColorTransformer;
 import com.pugstunt.mastermind.transformers.GuessTransformer;
 import com.pugstunt.mastermind.transformers.NewGameTransformer;
 
@@ -50,12 +47,9 @@ public class MastermindRS {
 	public Response guess(GuessRequest guessRequest) {
 
 		String gameKey = guessRequest.getGameKey();
-		
-		List<Color> guess = guessRequest.getCode()
-			.chars()
-			.mapToObj(new ColorTransformer())
-			.collect(toList());
-		
+
+		List<Color> guess = Color.from(guessRequest.getCode());
+
 		return Response.ok(new GuessTransformer().apply(gameService.checkGuess(gameKey, guess))).build();
 	}
 

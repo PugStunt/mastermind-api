@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.service.ImageService;
@@ -29,11 +29,15 @@ public class ImageRS {
 	 * @throws IOException
 	 */
 	@GET
-	@Path("/guess")
+	@Path("/{code}.png")
 	@Produces("image/png")
-	public byte[] guessImage(@QueryParam("code") String code) throws IOException {
+	public byte[] guessImage(@PathParam("code") String code) throws IOException {
 
-		return imageService.assembleResponseImage(code);
+		try {
+			return imageService.assembleResponseImage(code);
+		} catch (IllegalArgumentException e) {
+			return imageService.fallbackImage(code);
+		}
 	}
 
 }
