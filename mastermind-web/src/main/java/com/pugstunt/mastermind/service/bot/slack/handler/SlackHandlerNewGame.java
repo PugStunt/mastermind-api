@@ -7,12 +7,12 @@ import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.service.GameService;
-import com.pugstunt.mastermind.service.bot.slack.SlackService;
+import com.pugstunt.mastermind.service.SlackService;
 import com.pugstunt.mastermind.store.GameStore;
 
 public class SlackHandlerNewGame implements SlackHandler {
 
-	private static final String GAME_STARTED_MESSAGE = "GAME STARTED";
+	private static final String GAME_STARTED_MESSAGE = "Game Started";
 	private static final String COMMAND = "new game";
 	
 	@Inject

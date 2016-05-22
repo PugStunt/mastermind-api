@@ -1,10 +1,20 @@
 package com.pugstunt.mastermind.service.bot.slack.handler;
 
+import javax.inject.Inject;
+
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
+import com.pugstunt.mastermind.core.domain.enums.Color;
 
 public class SlackHandlerDefault implements SlackHandler {
 
+	private SlackHandlerGuess slackHandlerGuess;
+
+	@Inject
+	public SlackHandlerDefault(SlackHandlerGuess slackHandlerGuess) {
+		this.slackHandlerGuess = slackHandlerGuess;
+	}
+	
 	@Override
 	public boolean accept(String message) {
 		return false;
@@ -12,13 +22,13 @@ public class SlackHandlerDefault implements SlackHandler {
 
 	@Override
 	public SlackResponse apply(SlackRequest request) {
-		
-		// TODO if is a valid guess
-		if(request.getTextWithouTrigger().startsWith("YY")){
-			return new SlackHandlerGuess().apply(request);			
+
+		try {
+			Color.from(request.getTextWithouTrigger().replaceAll("\\s", ""));
+			return slackHandlerGuess.apply(request);
+		} catch (Exception e) {
+			return new SlackResponse("Didn't understand, captain");
 		}
-		
-		return new SlackResponse("Didn't understand captain");
 	}
 
 }

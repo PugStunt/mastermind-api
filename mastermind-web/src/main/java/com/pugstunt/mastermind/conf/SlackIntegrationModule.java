@@ -26,13 +26,37 @@ public class SlackIntegrationModule extends AbstractModule {
 	@Provides
 	@Singleton
 	public List<SlackHandler> getHandlers() throws Exception {
-	
+
 		final LinkedList<SlackHandler> handlers = Lists.newLinkedList();
-		handlers.add(new SlackHandlerNewGame());
-		handlers.add(new SlackHandlerGuess());
-		handlers.add(new SlackHandlerHint());
-		handlers.add(new SlackHandlerDefault());
+		handlers.add(handlerNewGame());
+		handlers.add(handlerGuess());
+		handlers.add(handlerHint());
+		handlers.add(handlerDefault());
 		return handlers;
 	}
-	
+
+	@Provides
+	@Singleton
+	public SlackHandlerNewGame handlerNewGame() {
+		return new SlackHandlerNewGame();
+	}
+
+	@Provides
+	@Singleton
+	public SlackHandlerGuess handlerGuess() {
+		return new SlackHandlerGuess();
+	}
+
+	@Provides
+	@Singleton
+	public SlackHandlerHint handlerHint() {
+		return new SlackHandlerHint();
+	}
+
+	@Provides
+	@Singleton
+	public SlackHandlerDefault handlerDefault() {
+		return new SlackHandlerDefault(handlerGuess());
+	}
+
 }

@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
-import com.pugstunt.mastermind.service.bot.slack.SlackService;
+import com.pugstunt.mastermind.service.SlackService;
 
 @Path("v1/bot/slack")
 public class SlackRS {

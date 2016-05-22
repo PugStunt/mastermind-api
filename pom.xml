@@ -94,6 +94,12 @@
 				<version>4.12</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.mockito</groupId>
+				<artifactId>mockito-all</artifactId>
+				<version>1.9.5</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -125,8 +131,9 @@
 				<configuration>
 					<processTypes>
 						<warFile>mastermind-web/target/mastermind-web.war</warFile>
-						<web>java $JAVA_OPTS -jar target/dependency/webapp-runner.jar
-							--port $PORT mastermind-web/target/*.war</web>
+						<web>java $JAVA_OPTS -jar
+							target/dependency/webapp-runner.jar --port $PORT
+							mastermind-web/target/*.war</web>
 					</processTypes>
 				</configuration>
 			</plugin>

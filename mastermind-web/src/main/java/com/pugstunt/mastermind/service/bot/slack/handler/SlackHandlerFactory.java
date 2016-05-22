@@ -8,11 +8,12 @@ import com.google.inject.Inject;
 public class SlackHandlerFactory {
 
 	private final List<SlackHandler> handlers;
-	private final SlackHandler handlerDefault = new SlackHandlerDefault();
-
+	private final SlackHandlerDefault handlerDefault;
+	
 	@Inject
-	public SlackHandlerFactory(List<SlackHandler> handlers) {
+	public SlackHandlerFactory(List<SlackHandler> handlers, SlackHandlerDefault handlerDefault) {
 		this.handlers = handlers;
+		this.handlerDefault = handlerDefault;
 	}
 	
 	public SlackHandler getHandlerFor(String message) {

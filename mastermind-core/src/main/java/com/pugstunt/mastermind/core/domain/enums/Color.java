@@ -44,7 +44,7 @@ public enum Color {
 					"Invalid size for guess. Expected: " + values().length + "; Actual: " + guess.length());
 		}
 
-		List<Color> colors = guess.chars().mapToObj(new Transformer()).collect(Collectors.toList());
+		List<Color> colors = guess.toUpperCase().chars().mapToObj(new Transformer()).collect(Collectors.toList());
 		return colors;
 	}
 
