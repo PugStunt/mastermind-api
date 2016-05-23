@@ -8,9 +8,9 @@ var Bot = require('slackbots');
 
 var MastermindBot = function Constructor(settings) {
     this.settings = settings;
-    this.settings.name = 'mastermind';
+    this.settings.name = settings.name;
     this.user = null;
-    this.game_api = 'https://mastermind-pugstunt.herokuapp.com/mastermind/v1/bot/slack'
+    this.game_api_uri = settings.game_api_uri;
 }
 
 util.inherits(MastermindBot, Bot);
@@ -74,7 +74,7 @@ MastermindBot.prototype._getChannelById = function (channelId) {
 MastermindBot.prototype._callAPI = function (message) {
     var channel = this._getChannelById(message.channel);
     var self = this;
-    request(self.game_api, {
+    request(self.game_api_uri, {
         method: 'POST',
         json: true,
         responseType: 'json',
