@@ -18,7 +18,7 @@ public class SlackService {
 
 	public SlackResponse botSays(SlackRequest request) {
 		
-		String message = request.getTextWithouTrigger();
+		String message = request.getText();
 		
 		return handlerFactory.getHandlerFor(valueOf(message)).apply(request);
 	}

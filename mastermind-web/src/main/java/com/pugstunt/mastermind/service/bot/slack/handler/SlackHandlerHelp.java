@@ -11,14 +11,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.io.Files;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
-import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 
 public class SlackHandlerHelp implements SlackHandler {
 
 	static final Logger logger = LoggerFactory.getLogger(SlackHandlerHelp.class);
 	
 	private static final String HELP = "help";
-	private static final String HELP_FILE = "help.txt";
+	private static final String HELP_FILE = "help.info";
 
 	@Override
 	public boolean accept(String message) {
@@ -29,9 +28,7 @@ public class SlackHandlerHelp implements SlackHandler {
 	@Override
 	public SlackResponse apply(SlackRequest request) {
 		SlackResponse response = new SlackResponse();
-		
-		response.getAttachments().add(SlackResponseAttachment.info(loadHelpText()));		
-		
+		response.setText(loadHelpText());
 		return response;
 	}
 

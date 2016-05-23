@@ -2,7 +2,6 @@ package com.pugstunt.mastermind.service.bot.slack.handler;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -35,22 +34,16 @@ public class SlackHandlerHelpTest {
 	public void helpRequestTest() throws IOException {
 
 		StringBuilder sb = new StringBuilder();
-		List<String> readLines = Files.readLines(new File(SlackHandlerHelpTest.class.getResource("help.txt").getPath()),
+		List<String> readLines = Files.readLines(new File(SlackHandlerHelpTest.class.getResource("help.info").getPath()),
 				Charset.defaultCharset());
 		readLines.forEach(line -> sb.append(line).append(System.lineSeparator()));
 
 		SlackResponse response = new SlackHandlerHelp().apply(buildRequest("help"));
-		assertNotNull(response.getAttachments());
-		assertEquals(1, response.getAttachments().size());
-		
-		String text = response.getAttachments().get(0).getText();
-
-		assertEquals(sb.toString(), text);
+		assertEquals(sb.toString(), response.getText());
 	}
 
 	private SlackRequest buildRequest(String triggerWord) {
 		SlackRequest request = new SlackRequest();
-		request.setTriggerWord(triggerWord);
 		return request;
 	}
 

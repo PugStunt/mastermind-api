@@ -6,30 +6,23 @@ public class SlackRequest {
 	
 	private String token;
 
-	@JsonProperty("team_id")
+	@JsonProperty("type")
+	private String type;
+	
+	@JsonProperty("team")
 	private String teamId;
 
-	@JsonProperty("team_domain")
-	private String teamDomain;
-
-	@JsonProperty("channel_id")
+	@JsonProperty("channel")
 	private String channelId;
 
-	@JsonProperty("channel_name")
-	private String channelName;
-
+	@JsonProperty("ts")
 	private String timestamp;
 
-	@JsonProperty("user_id")
+	@JsonProperty("user")
 	private String userId;
 
-	@JsonProperty("user_name")
-	private String username;
-
+	@JsonProperty("text")
 	private String text;
-
-	@JsonProperty("trigger_word")
-	private String triggerWord = "";
 
 	public String getToken() {
 		return token;
@@ -47,28 +40,12 @@ public class SlackRequest {
 		this.teamId = teamId;
 	}
 
-	public String getTeamDomain() {
-		return teamDomain;
-	}
-
-	public void setTeamDomain(String teamDomain) {
-		this.teamDomain = teamDomain;
-	}
-
 	public String getChannelId() {
 		return channelId;
 	}
 
 	public void setChannelId(String channelId) {
 		this.channelId = channelId;
-	}
-
-	public String getChannelName() {
-		return channelName;
-	}
-
-	public void setChannelName(String channelName) {
-		this.channelName = channelName;
 	}
 
 	public String getTimestamp() {
@@ -87,23 +64,7 @@ public class SlackRequest {
 		this.userId = userId;
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public String getText() {
-		return text;
-	}
-
-	public String getTextWithouTrigger() {
-		if(triggerWord != null && text.indexOf(triggerWord) == 0){
-			return text.substring(triggerWord.length());
-		}
-		
 		return text;
 	}
 
@@ -111,16 +72,16 @@ public class SlackRequest {
 		this.text = text;
 	}
 
-	public String getTriggerWord() {
-		return triggerWord;
-	}
-
-	public void setTriggerWord(String triggerWord) {
-		this.triggerWord = triggerWord;
-	}
-
 	public String getKeyBase() {
 		return getUserId() + getChannelId() + getTeamId();
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }

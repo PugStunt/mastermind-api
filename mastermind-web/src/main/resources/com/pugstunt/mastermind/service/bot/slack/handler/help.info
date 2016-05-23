@@ -1,0 +1,20 @@
+Hello there!
+I'll create a secret sequence of color, and I'd like you to discover it!
+This sequence has 8 colors and you need to guess all of them, in the correct order.
+
+MasterMind commands are:
+
+*New Game:* new game
+*Guess:* Send your guess like: `RBGYOPCM`
+
+Available colors:
+	R: red
+	B: green
+	G: blue
+	Y: yellow
+	O: orange
+	P: purple
+	C: cyan
+	M: magenta
+	
+web-browser version: https://pugstunt.github.io/mastermind

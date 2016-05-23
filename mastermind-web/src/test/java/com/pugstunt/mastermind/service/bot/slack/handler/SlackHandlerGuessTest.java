@@ -21,7 +21,7 @@ public class SlackHandlerGuessTest {
 
 	@Test
 	public void testAccept() {
-		SlackHandlerGuess handler = new SlackHandlerGuess(null, null);
+		SlackHandlerGuess handler = new SlackHandlerGuess(null);
 		assertFalse(handler.accept(""));
 		assertFalse(handler.accept("new game"));
 		assertFalse(handler.accept("newgame"));
@@ -45,26 +45,20 @@ public class SlackHandlerGuessTest {
 		Mockito.when(service.checkGuess("GAME-KEY", Color.from("RGBRGBYY"))).thenReturn(game);
 		Mockito.when(game.getLastResult()).thenReturn(lastResult);
 
-		SlackHandlerGuess handler = new SlackHandlerGuess(service, null);
+		SlackHandlerGuess handler = new SlackHandlerGuess(service);
 
 		SlackRequest request = buildRequest("Guess RGBRGBYY");
 
 		SlackResponse response = handler.apply(request);
-
-		String text = response.getAttachments().get(0).getText();
-
-		assertEquals("Exact: 2 | Near: 3", text);
+		assertEquals("Exact: 2 | Near: 3", response.getText());
 	}
 
 	private SlackRequest buildRequest(String text) {
 		SlackRequest request = new SlackRequest();
 		request.setText(text);
-		request.setTriggerWord("mm");
 		request.setChannelId("CHANNEL-ID");
-		request.setChannelName("Channel");
 		request.setTeamId("TEAM-ID");
 		request.setUserId("USER-ID");
-		request.setUsername("Username");
 
 		return request;
 	}

@@ -9,12 +9,10 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackRequest;
 import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponse;
-import com.pugstunt.mastermind.core.domain.bot.slack.SlackResponseAttachment;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
 import com.pugstunt.mastermind.core.entity.PastResult;
 import com.pugstunt.mastermind.service.GameService;
-import com.sun.jersey.api.core.HttpRequestContext;
 
 public class SlackHandlerGuess implements SlackHandler {
 
@@ -23,12 +21,9 @@ public class SlackHandlerGuess implements SlackHandler {
 
 	private GameService gameService;
 
-	private HttpRequestContext context;
-
 	@Inject
-	public SlackHandlerGuess(GameService gameService, HttpRequestContext context) {
+	public SlackHandlerGuess(GameService gameService) {
 		this.gameService = gameService;
-		this.context = context;
 	}
 
 	@Override
@@ -51,11 +46,8 @@ public class SlackHandlerGuess implements SlackHandler {
 		final GameEntry game = gameService.checkGuess(gameKey, colors);
 
 		SlackResponse response = new SlackResponse();
-		SlackResponseAttachment attachment = SlackResponseAttachment.info(responseText(game, guess));
-		String domain = context.getRequestUri().toString();
-		attachment.setImageUrl(domain + "/v1/image/" + guess.toUpperCase() + ".png");
-		response.getAttachments().add(attachment);
-
+		response.setText(responseText(game, guess));
+		
 		return response;
 	}
 
