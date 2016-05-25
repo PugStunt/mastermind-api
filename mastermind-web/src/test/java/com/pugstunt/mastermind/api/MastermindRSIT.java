@@ -24,8 +24,8 @@ import org.junit.Test;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.config.RestAssuredConfig;
 import com.jayway.restassured.response.ValidatableResponse;
-import com.pugstunt.mastermind.core.domain.GuessRequest;
-import com.pugstunt.mastermind.core.domain.NewGameRequest;
+import com.pugstunt.mastermind.core.domain.PlayerGuess;
+import com.pugstunt.mastermind.core.domain.CreateNewGame;
 import com.pugstunt.mastermind.core.domain.Result;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 
@@ -51,7 +51,7 @@ public class MastermindRSIT {
 		given().
 			accept(MediaType.APPLICATION_JSON).
 			contentType(MediaType.APPLICATION_JSON).
-			body(new NewGameRequest("John Snow")).
+			body(new CreateNewGame("John Snow")).
 		when().
 			post("/v1/new_game").
 		then().
@@ -68,7 +68,7 @@ public class MastermindRSIT {
 	public void firstGuess() {
 		
 		final String gameKey = getGameKey();
-		final GuessRequest request = new GuessRequest();
+		final PlayerGuess request = new PlayerGuess();
 		request.setCode(newArrayList(AVAILABLE_COLORS).stream().reduce(new String(), (a, b) -> a.concat(b)));
 		request.setGameKey(gameKey);
 		
@@ -101,7 +101,7 @@ public class MastermindRSIT {
 	@Test
 	public void invalidKey() {
 		
-		final GuessRequest request = new GuessRequest();
+		final PlayerGuess request = new PlayerGuess();
 		request.setCode("GGGGGGGG");
 		request.setGameKey("invalid game key!!");
 		
@@ -120,7 +120,7 @@ public class MastermindRSIT {
 	@Test
 	public void invalidColorGuess() {
 		
-		final GuessRequest request = new GuessRequest();
+		final PlayerGuess request = new PlayerGuess();
 		request.setCode("AAAAAAAA");
 		request.setGameKey(getGameKey());
 		
@@ -139,7 +139,7 @@ public class MastermindRSIT {
 	@Test
 	public void invalidGuessSize() {
 		
-		final GuessRequest request = new GuessRequest();
+		final PlayerGuess request = new PlayerGuess();
 		request.setCode("R");
 		request.setGameKey(getGameKey());
 		
@@ -158,7 +158,7 @@ public class MastermindRSIT {
 	@Test
 	public void guessNotInformed() {
 		
-		final GuessRequest request = new GuessRequest();
+		final PlayerGuess request = new PlayerGuess();
 		request.setGameKey(getGameKey());
 		
 		given().
@@ -178,7 +178,7 @@ public class MastermindRSIT {
 		return given().
 			accept(MediaType.APPLICATION_JSON).
 			contentType(MediaType.APPLICATION_JSON).
-			body(new NewGameRequest("John")).
+			body(new CreateNewGame("John")).
 		when().
 			post("/v1/new_game").
 		then().
