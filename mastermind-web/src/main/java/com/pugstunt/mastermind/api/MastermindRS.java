@@ -33,7 +33,7 @@ import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
 
 @Api("mastermind")
-@Path("v1/")
+@Path("v1")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @SwaggerDefinition(
@@ -47,6 +47,7 @@ import io.swagger.annotations.Tag;
 				@Tag(name = "new_game", description="Creates a new game"),
 				@Tag(name = "guess", description="Check whether player guess is right")
 		},
+		basePath = "/api",
 		produces = { MediaType.APPLICATION_JSON },
 		consumes = { MediaType.APPLICATION_JSON }
 )

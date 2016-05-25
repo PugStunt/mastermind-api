@@ -32,7 +32,7 @@ public class RestModule extends JerseyServletModule {
 		bind(MastermindExceptionMapper.class).in(Singleton.class);
 		
 		filter("/*").through(CORSResponseFilter.class);
-		serve("/*").with(GuiceContainer.class);
+		serve("/api/*").with(GuiceContainer.class);
 
 	}
 
