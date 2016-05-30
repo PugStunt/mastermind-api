@@ -60,13 +60,18 @@ public class MastermindRS {
 		this.gameService = gameService;
 	}
 
-	@ApiOperation(
-			value = "Creates new game for given player and generates the gamey_key",
-			notes = "Start a new game",
-			response = GameCreated.class
-	)
+
 	@POST
 	@Path("/new_game")
+	@ApiOperation(
+			value = "Creates new game",
+			notes = "Start a new game",
+			httpMethod = "POST",
+			response = GameCreated.class
+	)
+	@ApiResponses({
+		@ApiResponse(code = 500, message = "Internal Server Error")
+	})
 	public Response newGame(@ApiParam(value = "Player name field", required = true) CreateNewGame newGame) {
 
 		final GameEntry game = gameService.newGame(newGame.getUser());
@@ -74,19 +79,20 @@ public class MastermindRS {
 		return Response.ok(new NewGameTransformer().apply(game)).build();
 	}
 
+	@POST
+	@Path("/guess")
 	@ApiOperation(
-			value = "",
+			value = "Check player guess",
 			notes = "This endpoint requires the game_key and code consisting of "
 					+ "8 letters of RBGYOPCM (corresponding to Red, Blue, Green,"
 					+ "Yellow, Orange, Purple, Cyan, Magenta)",
-			response = PlayerGuess.class
+			httpMethod = "POST",
+			response = SolvedGame.class
 	)
-	@POST
-	@Path("/guess")
 	@ApiResponses({
-		@ApiResponse(code = 200, message = "When the player solves the game", response = SolvedGame.class),
-		@ApiResponse(code = 200, message = "When the player misses the answer", response = WrongGuess.class),
-		@ApiResponse(code = 200, message = "Game session expired (5 minutes), start new one")
+		@ApiResponse(code = 207, message = "When the player misses the answer", response = WrongGuess.class),
+		@ApiResponse(code = 419, message = "Game session expired", response = String.class),
+		@ApiResponse(code = 500, message = "Internal Server Error")
 	})
 	public Response guess(@ApiParam(value = "Player guess", required = true) PlayerGuess playerGuess) {
 
@@ -101,7 +107,7 @@ public class MastermindRS {
 			}
 			return Response.ok(new WrongGuessTransformer().apply(game)).build();
 		}
-		return Response.ok("Game session expired (5 minutes), start new one").build();
+		return Response.ok("Your gameKey has been expired, start new one").build();
 	}
 
 }
