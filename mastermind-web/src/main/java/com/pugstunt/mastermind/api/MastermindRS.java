@@ -39,12 +39,11 @@ import io.swagger.annotations.Tag;
 @SwaggerDefinition(
 		info = @Info(
 				title = "Mastermind-API Documentation",
-				version = "1.0.0",
-				description = "Game Operations"
+				version = "1.0.0"
 		),
 		tags = {
-				@Tag(name = "mastermind", description="Mastermind Operations"),
-				@Tag(name = "new_game", description="Creates a new game"),
+				@Tag(name = "mastermind", description="game operations"),
+				@Tag(name = "new_game", description="Create new game"),
 				@Tag(name = "guess", description="Check whether player guess is right")
 		},
 		basePath = "/api",
@@ -64,7 +63,7 @@ public class MastermindRS {
 	@POST
 	@Path("/new_game")
 	@ApiOperation(
-			value = "Creates new game",
+			value = "Create new game",
 			notes = "Start a new game",
 			httpMethod = "POST",
 			response = GameCreated.class
@@ -82,7 +81,7 @@ public class MastermindRS {
 	@POST
 	@Path("/guess")
 	@ApiOperation(
-			value = "Check player guess",
+			value = "Check whether player guess is right",
 			notes = "This endpoint requires the game_key and code consisting of "
 					+ "8 letters of RBGYOPCM (corresponding to Red, Blue, Green,"
 					+ "Yellow, Orange, Purple, Cyan, Magenta)",
@@ -107,7 +106,7 @@ public class MastermindRS {
 			}
 			return Response.ok(new WrongGuessTransformer().apply(game)).build();
 		}
-		return Response.ok("Your gameKey has been expired, start new one").build();
+		return Response.ok("Your gameKey has been expired").build();
 	}
 
 }
