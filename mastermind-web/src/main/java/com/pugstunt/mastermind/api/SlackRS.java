@@ -27,7 +27,7 @@ import io.swagger.annotations.Tag;
 				version = "1.0.0"
 		),
 		tags = {
-				@Tag(name = "slack-integration", description="useful things to write an slack-bot"),
+				@Tag(name = "slack-integration", description="useful things to write a slack-bot"),
 				@Tag(name = "botSays", description = "Process slack message")
 		},
 		basePath = "/api",
