@@ -24,16 +24,15 @@ public class RestModule extends JerseyServletModule {
 	@Override
 	protected void configureServlets() {
 		
-		bind(MastermindExceptionMapper.class).in(Singleton.class);
-		
 		final ResourceConfig rc = new PackagesResourceConfig("com.pugstunt.mastermind.api");
 		for (Class<?> resource : rc.getClasses()) {
 			bind(resource);
 		}
-
-		filter("/mastermind/*").through(CORSResponseFilter.class);
 		
-		serve("/mastermind/*").with(GuiceContainer.class);
+		bind(MastermindExceptionMapper.class).in(Singleton.class);
+		
+		filter("/*").through(CORSResponseFilter.class);
+		serve("/api/*").with(GuiceContainer.class);
 
 	}
 
@@ -74,5 +73,6 @@ public class RestModule extends JerseyServletModule {
 		}
 		
 	}
-
+	
+	
 }

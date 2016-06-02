@@ -14,6 +14,7 @@ public class MastermindLocal extends AbstractModule {
 		install(new PersistenceModule());
 		install(new ServiceModule());
 		install(new SlackIntegrationModule());
+		install(new SwaggerModule());
 	}
 
 }
