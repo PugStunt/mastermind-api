@@ -36,7 +36,7 @@ public class PersistenceModule extends AbstractModule {
 
 		final RedisClient redisClient = 
 				new RedisClient(RedisURI.create(env.get()));
-		
+
 		return Suppliers.ofInstance(redisClient.connect());
 	}
 
