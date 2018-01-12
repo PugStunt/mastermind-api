@@ -31,6 +31,8 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.Info;
 import io.swagger.annotations.SwaggerDefinition;
 import io.swagger.annotations.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Api("mastermind")
 @Path("v1")
@@ -51,6 +53,8 @@ import io.swagger.annotations.Tag;
 		consumes = { MediaType.APPLICATION_JSON }
 )
 public class MastermindRS {
+
+	static final Logger logger = LoggerFactory.getLogger(MastermindRS.class);
 
 	private final GameService gameService;
 	
@@ -73,6 +77,7 @@ public class MastermindRS {
 	})
 	public Response newGame(@ApiParam(value = "Player name field", required = true) CreateNewGame newGame) {
 
+		logger.info("Creating new game - request=[{}]", newGame);
 		final GameEntry game = gameService.newGame(newGame.getUser());
 
 		return Response.ok(new NewGameTransformer().apply(game)).build();

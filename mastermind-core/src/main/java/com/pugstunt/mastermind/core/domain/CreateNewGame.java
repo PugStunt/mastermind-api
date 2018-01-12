@@ -27,5 +27,12 @@ public class CreateNewGame {
 	public void setUser(String user) {
 		this.user = user;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "CreateNewGame{" +
+				"user='" + user + '\'' +
+				'}';
+	}
+
 }
