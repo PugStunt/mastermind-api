@@ -19,9 +19,8 @@ public class NewGameTransformer implements Function<GameEntry, GameCreated> {
 		
 		final List<Color> answer = game.getAnswer();
 		response.setColors(
-				Arrays.asList(Color.values())
-					.stream()
-					.map(color -> color.getValue())
+				Arrays.stream(Color.values())
+					.map(Color::getValue)
 					.collect(toList())
 				);
 		

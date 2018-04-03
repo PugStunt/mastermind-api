@@ -10,7 +10,6 @@ import com.lambdaworks.redis.RedisClient;
 import com.lambdaworks.redis.RedisConnection;
 import com.lambdaworks.redis.RedisConnectionPool;
 import com.lambdaworks.redis.RedisURI;
-import com.pugstunt.mastermind.conf.env.ConnectionRedis;
 import com.pugstunt.mastermind.store.GameStore;
 import com.pugstunt.mastermind.store.redis.RedisGameStore;
 import org.slf4j.Logger;
@@ -35,9 +34,12 @@ public class PersistenceModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	public RedisConnectionPool<RedisConnection<String, String>> pool(ConnectionRedis env) throws Exception {
+	public RedisConnectionPool<RedisConnection<String, String>> pool() throws Exception {
 
-		final RedisClient redisClient = new RedisClient(RedisURI.create(env.get()));
+		final String connection = System.getenv("redis.connection.string");
+		logger.info("redis.connection.string={}", connection);
+
+		final RedisClient redisClient = new RedisClient(RedisURI.create(connection));
 		final RedisConnectionPool<RedisConnection<String, String>> pool = redisClient.pool();
 
 		logger.info("Redis connection pool created");

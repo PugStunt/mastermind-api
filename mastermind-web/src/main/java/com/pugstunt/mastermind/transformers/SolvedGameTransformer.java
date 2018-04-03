@@ -30,9 +30,8 @@ public class SolvedGameTransformer implements Function<GameEntry, SolvedGame> {
 		
 		response.setStartTime(new Date(game.getStartTime()));
 		response.setSolved(game.isSolved());
-		response.setColors(Arrays.asList(Color.values())
-					.stream()
-					.map(color -> color.getValue())
+		response.setColors(Arrays.stream(Color.values())
+					.map(Color::getValue)
 					.collect(toList()));
 		
 		response.setCodeLength(game.getAnswer().size());
@@ -41,7 +40,7 @@ public class SolvedGameTransformer implements Function<GameEntry, SolvedGame> {
 		final long startTime = game.getStartTime();
 		final long timeTaken = currentTime - startTime;
 		
-		response.setTimeTaken(new Float(TimeUnit.MILLISECONDS.toSeconds(timeTaken)));
+		response.setTimeTaken((float) TimeUnit.MILLISECONDS.toSeconds(timeTaken));
 		response.setResult("You win!");
 		response.setFurtherInstructions("Solve the challenge to see this!");
 		

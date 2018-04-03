@@ -27,9 +27,8 @@ public class WrongGuessTransformer  implements Function<GameEntry, WrongGuess> {
 				);
 		
 		response.setSolved(game.isSolved());
-		response.setColors(Arrays.asList(Color.values())
-					.stream()
-					.map(color -> color.getValue())
+		response.setColors(Arrays.stream(Color.values())
+					.map(Color::getValue)
 					.collect(toList()));
 		
 		response.setCodeLength(game.getAnswer().size());
