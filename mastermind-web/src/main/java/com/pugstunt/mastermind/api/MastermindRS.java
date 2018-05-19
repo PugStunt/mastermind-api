@@ -3,14 +3,15 @@ package com.pugstunt.mastermind.api;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
-import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.CreateNewGame;
 import com.pugstunt.mastermind.core.domain.GameCreated;
 import com.pugstunt.mastermind.core.domain.PlayerGuess;
@@ -39,18 +40,18 @@ import org.slf4j.LoggerFactory;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 @SwaggerDefinition(
-		info = @Info(
-				title = "Mastermind-API Documentation",
-				version = "1.0.0"
-		),
-		tags = {
-				@Tag(name = "mastermind", description="game operations"),
-				@Tag(name = "new_game", description="Create new game"),
-				@Tag(name = "guess", description="Check whether player guess is right")
-		},
-		basePath = "/api",
-		produces = { MediaType.APPLICATION_JSON },
-		consumes = { MediaType.APPLICATION_JSON }
+	info = @Info(
+			title = "Mastermind-API Documentation",
+			version = "1.0.0"
+	),
+	tags = {
+			@Tag(name = "mastermind", description="game operations"),
+			@Tag(name = "new_game", description="Create new game"),
+			@Tag(name = "guess", description="Check whether player guess is right")
+	},
+	basePath = "/api",
+	produces = { MediaType.APPLICATION_JSON },
+	consumes = { MediaType.APPLICATION_JSON }
 )
 public class MastermindRS {
 
@@ -67,10 +68,10 @@ public class MastermindRS {
 	@POST
 	@Path("/new_game")
 	@ApiOperation(
-			value = "Create new game",
-			notes = "Start a new game",
-			httpMethod = "POST",
-			response = GameCreated.class
+		value = "Create new game",
+		notes = "Start a new game",
+		httpMethod = "POST",
+		response = GameCreated.class
 	)
 	@ApiResponses({
 		@ApiResponse(code = 500, message = "Internal Server Error")
@@ -86,12 +87,12 @@ public class MastermindRS {
 	@POST
 	@Path("/guess")
 	@ApiOperation(
-			value = "Check whether player guess is right",
-			notes = "This endpoint requires the game_key and code consisting of "
-					+ "8 letters of RBGYOPCM (corresponding to Red, Blue, Green,"
-					+ "Yellow, Orange, Purple, Cyan, Magenta)",
-			httpMethod = "POST",
-			response = SolvedGame.class
+		value = "Check whether player guess is right",
+		notes = "This endpoint requires the game_key and code consisting of "
+				+ "8 letters of RBGYOPCM (corresponding to Red, Blue, Green,"
+				+ "Yellow, Orange, Purple, Cyan, Magenta)",
+		httpMethod = "POST",
+		response = SolvedGame.class
 	)
 	@ApiResponses({
 		@ApiResponse(code = 207, message = "When the player misses the answer", response = WrongGuess.class),
@@ -111,7 +112,7 @@ public class MastermindRS {
 			}
 			return Response.ok(new WrongGuessTransformer().apply(game)).build();
 		}
-		return Response.status(404).entity("Your gameKey has been expired").build();
+		return Response.status(Status.FORBIDDEN).entity("Your gameKey has been expired").build();
 	}
 
 }
