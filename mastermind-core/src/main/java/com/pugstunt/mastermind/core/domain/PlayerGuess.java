@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 @ApiModel(value = "PlayerGuess", description = "PlayerGuess resource representation")
+@Data
 public class PlayerGuess {
 
 	@ApiModelProperty(value = "Sequence of characters representating player guess")
@@ -16,19 +18,4 @@ public class PlayerGuess {
 	@JsonProperty("game_key")
 	private String gameKey;
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String getGameKey() {
-		return gameKey;
-	}
-
-	public void setGameKey(String gameKey) {
-		this.gameKey = gameKey;
-	}
 }

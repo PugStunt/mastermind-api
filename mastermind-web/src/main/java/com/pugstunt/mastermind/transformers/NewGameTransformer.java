@@ -26,7 +26,7 @@ public class NewGameTransformer implements Function<GameEntry, GameCreated> {
 		
 		response.setCodeLength(answer.size());
 		response.setGameKey(game.getGameKey());
-		response.setNumGuesses(game.getGuesses());
+		response.setNumGuesses(game.getGuessNumber());
 		
 		response.setPastResults(
 				game.getPastResults().stream()

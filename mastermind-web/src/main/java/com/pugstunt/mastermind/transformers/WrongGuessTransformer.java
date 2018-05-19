@@ -18,7 +18,7 @@ public class WrongGuessTransformer  implements Function<GameEntry, WrongGuess> {
 		WrongGuess response = new WrongGuess();
 		
 		response.setGameKey(game.getGameKey());
-		response.setNumGuesses(game.getGuesses());
+		response.setNumGuesses(game.getGuessNumber());
 
 		response.setPastResults(
 				game.getPastResults().stream()

@@ -7,8 +7,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 @ApiModel(value = "Result", description = "Result resource representation")
+@Data
 @JsonInclude(NON_NULL)
 public class Result {
 
@@ -23,29 +25,5 @@ public class Result {
 	@ApiModelProperty(value = "The player guess")
 	@JsonProperty("guess")
 	private String guess;
-	
-	public Integer getExact() {
-		return exact;
-	}
-
-	public void setExact(Integer exact) {
-		this.exact = exact;
-	}
-
-	public Integer getNear() {
-		return near;
-	}
-
-	public void setNear(Integer near) {
-		this.near = near;
-	}
-
-	public String getGuess() {
-		return guess;
-	}
-
-	public void setGuess(String guess) {
-		this.guess = guess;
-	}
-	
+		
 }

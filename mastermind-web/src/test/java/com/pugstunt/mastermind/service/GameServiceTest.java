@@ -78,9 +78,9 @@ public class GameServiceTest {
 	public void newGame() {
 		
 		GameEntry entry = service.newGame("John Snow");
-		assertThat(entry.getPlayer(), equalTo("John Snow"));
+		assertThat(entry.getPlayerName(), equalTo("John Snow"));
 		assertThat(entry.getGameKey(), notNullValue());
-		assertThat(entry.getGuesses(), equalTo(0));
+		assertThat(entry.getGuessNumber(), equalTo(0));
 		assertThat(entry.isSolved(), is(false));
 		assertThat(entry.isActive(), is(true));
 		assertThat(entry.getAnswer(), is(both(not(emptyCollectionOf(Color.class))).and(hasSize(CODE_LENGTH))));
@@ -90,9 +90,9 @@ public class GameServiceTest {
 	public void newGameWithGameKey() {
 		
 		GameEntry entry = service.newGame("John Snow", "gameKey#1");
-		assertThat(entry.getPlayer(), equalTo("John Snow"));
+		assertThat(entry.getPlayerName(), equalTo("John Snow"));
 		assertThat(entry.getGameKey(), equalTo("gameKey#1"));
-		assertThat(entry.getGuesses(), equalTo(0));
+		assertThat(entry.getGuessNumber(), equalTo(0));
 		assertThat(entry.isSolved(), is(false));
 		assertThat(entry.isActive(), is(true));
 		assertThat(entry.getAnswer(), is(both(not(emptyCollectionOf(Color.class))).and(hasSize(CODE_LENGTH))));
@@ -110,9 +110,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(differentColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(8));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(0));
@@ -135,9 +135,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(differentColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(4));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(4));
@@ -160,9 +160,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(differentColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(0));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(8));
@@ -185,9 +185,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(containsRepeatedColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(4));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(0));
@@ -208,9 +208,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(containsRepeatedColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(2));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(1));
@@ -231,9 +231,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(containsRepeatedColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(0));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(8));
@@ -254,9 +254,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(differentColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(4));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(0));
@@ -277,9 +277,9 @@ public class GameServiceTest {
 		verify(store).findByKey("gameKey");
 		
 		assertThat(entry.getGameKey(), equalTo("gameKey"));
-		assertThat(entry.getPlayer(), equalTo("Marty McFly"));
+		assertThat(entry.getPlayerName(), equalTo("Marty McFly"));
 		assertThat(entry.getAnswer(), equalTo(differentColorsAnswer));
-		assertThat(entry.getGuesses(), equalTo(1));
+		assertThat(entry.getGuessNumber(), equalTo(1));
 		assertThat(entry.getPastResults(), hasSize(1));
 		assertThat(entry.getPastResults().stream().findFirst().get().getNear(), equalTo(0));
 		assertThat(entry.getPastResults().stream().findFirst().get().getExact(), equalTo(4));
@@ -338,11 +338,12 @@ public class GameServiceTest {
 	
 	private GameEntry createGameEntry(List<Color> answer) {
 		
-		return GameEntry.builder("gameKey")
+		return GameEntry.builder()
+				.gameKey("gameKey")
 				.startTime(new Date().getTime())
 				.solved(false)
 				.playerName("Marty McFly")
-				.guessesNumber(0)
+				.guessNumber(0)
 				.answer(answer)
 				.build();
 	}

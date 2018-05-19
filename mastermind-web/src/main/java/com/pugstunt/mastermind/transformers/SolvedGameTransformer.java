@@ -18,9 +18,9 @@ public class SolvedGameTransformer implements Function<GameEntry, SolvedGame> {
 		
 		SolvedGame response = new SolvedGame();
 		
-		response.setUser(game.getPlayer());
+		response.setUser(game.getPlayerName());
 		response.setGameKey(game.getGameKey());
-		response.setNumGuesses(game.getGuesses());
+		response.setNumGuesses(game.getGuessNumber());
 
 		response.setPastResults(
 				game.getPastResults().stream()

@@ -2,8 +2,10 @@ package com.pugstunt.mastermind.service;
 
 import static java.util.stream.Collectors.joining;
 
+import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -13,8 +15,6 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Charsets;
-import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.pugstunt.mastermind.core.domain.enums.Color;
 import com.pugstunt.mastermind.core.entity.GameEntry;
@@ -43,9 +43,10 @@ public class GameService {
 	public GameEntry newGame(String player, String gameKey) {
 		
 		final GameEntry game = 
-				GameEntry.builder(gameKey)
+				GameEntry.builder()
+					.gameKey(gameKey)
 					.playerName(player)
-					.guessesNumber(0)
+					.guessNumber(0)
 					.solved(false)
 					.answer(makeChallenge())
 					.startTime(new Date().getTime())
@@ -59,7 +60,7 @@ public class GameService {
 	private List<Color> makeChallenge() {
 
 		final Color[] colors = Color.values();
-		final List<Color> challenge = Lists.newArrayListWithExpectedSize(CODE_LENGTH);
+		final List<Color> challenge = new ArrayList<>(CODE_LENGTH);
 		while (challenge.size() < CODE_LENGTH) {
 			int color = (int) (Math.random() * colors.length);
 			challenge.add(colors[color]);
@@ -91,7 +92,7 @@ public class GameService {
 	private GameEntry check(GameEntry game, List<Color> guess) {
 		
 		final List<Color> answer = game.getAnswer();
-		final List<Color> remainingGuess = Lists.newArrayList(guess);
+		final List<Color> remainingGuess = new ArrayList<>(guess);
 		
 		if (game.isActive() && !game.isSolved()) {
 			
@@ -115,20 +116,19 @@ public class GameService {
 						.near(near - exact)
 						.build();
 			
-			List<PastResult> pastResults = Lists.newArrayList();
-			pastResults.addAll(game.getPastResults());
+			List<PastResult> pastResults = new ArrayList<>(game.getPastResults());
 			pastResults.add(pastResult);
 			
 			return clone(game)
 					.solved(exact == answer.size())
-					.guessesNumber(game.getGuesses() + 1)
+					.guessNumber(game.getGuessNumber() + 1)
 					.pastResults(pastResults)
 					.build();
 		}
 		
 		return clone(game)
 				.solved(game.isSolved())
-				.guessesNumber(game.getGuesses())
+				.guessNumber(game.getGuessNumber())
 				.pastResults(game.getPastResults())
 				.build();
 	}
@@ -146,10 +146,11 @@ public class GameService {
 		
 	}
 	
-	private GameEntry.Builder clone(GameEntry prototype) {
+	private GameEntry.GameEntryBuilder clone(GameEntry prototype) {
 		
-		return GameEntry.builder(prototype.getGameKey())
-			.playerName(prototype.getPlayer())
+		return GameEntry.builder()
+			.gameKey(prototype.getGameKey())
+			.playerName(prototype.getPlayerName())
 			.answer(prototype.getAnswer())
 			.startTime(prototype.getStartTime());
 	}
@@ -158,7 +159,7 @@ public class GameService {
 		logger.info("building gameKey using keyBase={}", keyBase);
 		try {
 			MessageDigest digest = MessageDigest.getInstance("MD5");
-			return new String(digest.digest(keyBase.getBytes()), Charsets.UTF_8);
+			return new String(digest.digest(keyBase.getBytes()), Charset.forName("UTF-8"));
 		} catch (NoSuchAlgorithmException ex) {
 			logger.error("An error occured while building gameKey using keyBase={}", keyBase, ex);
 			throw new RuntimeException(ex);

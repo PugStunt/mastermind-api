@@ -2,6 +2,9 @@ package com.pugstunt.mastermind.core.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import lombok.Data;
+
+@Data
 public class ErrorResponse {
 	
 	@JsonProperty("status")
@@ -9,21 +12,5 @@ public class ErrorResponse {
 	
 	@JsonProperty("text")
 	private String text;
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 	
 }
