@@ -1,8 +1,10 @@
 package com.pugstunt.mastermind.core.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.collect.Lists;
@@ -19,7 +21,6 @@ public class GameEntry implements Serializable {
 	private boolean solved;
 	private List<Color> answer;
 	private long startTime;
-	private boolean active;
 	
 	private GameEntry() {
 		super();
@@ -54,6 +55,8 @@ public class GameEntry implements Serializable {
 	}
 	
 	public boolean isActive() {
+		final long currentTime = new Date().getTime();
+		final boolean active = currentTime - getStartTime() < TimeUnit.MINUTES.toMillis(5);
 		return active;
 	}
 	
@@ -70,7 +73,6 @@ public class GameEntry implements Serializable {
 		private boolean solved;
 		private List<Color> answer;
 		private long startTime;
-		private boolean active;
 		
 		private Builder(String gameKey) {
 			this.gameKey = gameKey;
@@ -106,11 +108,6 @@ public class GameEntry implements Serializable {
 			return this;
 		}
 		
-		public Builder active(boolean value) {
-			active = value;
-			return this;
-		}
-		
 		public GameEntry build() {
 			GameEntry gameEntry = new GameEntry();
 			gameEntry.gameKey = gameKey;
@@ -120,7 +117,6 @@ public class GameEntry implements Serializable {
 			gameEntry.solved = solved;
 			gameEntry.answer = answer;
 			gameEntry.startTime = startTime;
-			gameEntry.active = active;
 			return gameEntry;
 		}
 		

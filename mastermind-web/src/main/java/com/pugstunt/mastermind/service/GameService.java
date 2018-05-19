@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +27,6 @@ public class GameService {
 	static final Logger logger = LoggerFactory.getLogger(GameService.class);
 	
 	public static final int CODE_LENGTH = 8;
-	public static final long GAME_DURATION_TIME = System.getProperty("game.duration.milliseconds") != null ?
-		Long.valueOf(System.getProperty("game.duration.milliseconds")) : TimeUnit.MINUTES.toMillis(5);
 	
 	private final GameStore gameStore;
 	
@@ -52,7 +49,6 @@ public class GameService {
 					.solved(false)
 					.answer(makeChallenge())
 					.startTime(new Date().getTime())
-					.active(true)
 					.build();
 			
 			gameStore.save(game);
@@ -77,15 +73,19 @@ public class GameService {
 
 		final Optional<GameEntry> game = gameStore.findByKey(gameKey);
 
-		if (game.isPresent() && game.get().isActive()) {
-			logger.info("Active game found for gameKey={}, checking guess", gameKey);
-			final GameEntry currentGame = check(game.get(), guess);
-			gameStore.save(currentGame);
-			return currentGame;
+		if (game.isPresent()) {
+			if (game.get().isActive()) {
+				logger.info("Active game found for gameKey={}, checking guess", gameKey);
+				final GameEntry currentGame = check(game.get(), guess);
+				gameStore.save(currentGame);
+				return currentGame;
+			} else {
+				logger.info("No active game for gameKey={}", gameKey);
+				return game.get();
+			}
+		} else {
+			throw new GameNotFoundException();
 		}
-		
-		logger.info("No active game for gameKey={}", gameKey);
-		throw new GameNotFoundException();
 	}
 
 	private GameEntry check(GameEntry game, List<Color> guess) {
@@ -93,7 +93,7 @@ public class GameService {
 		final List<Color> answer = game.getAnswer();
 		final List<Color> remainingGuess = Lists.newArrayList(guess);
 		
-		if (isActive(game) && !game.isSolved()) {
+		if (game.isActive() && !game.isSolved()) {
 			
 			int exact = 0;
 			int near  = 0;
@@ -119,17 +119,15 @@ public class GameService {
 			pastResults.addAll(game.getPastResults());
 			pastResults.add(pastResult);
 			
-			return buildCommonGameEntryInfo(game)
+			return clone(game)
 					.solved(exact == answer.size())
-					.active(game.isActive())
 					.guessesNumber(game.getGuesses() + 1)
 					.pastResults(pastResults)
 					.build();
 		}
 		
-		return buildCommonGameEntryInfo(game)
+		return clone(game)
 				.solved(game.isSolved())
-				.active(false)
 				.guessesNumber(game.getGuesses())
 				.pastResults(game.getPastResults())
 				.build();
@@ -148,19 +146,12 @@ public class GameService {
 		
 	}
 	
-	private boolean isActive(GameEntry game) {
-		final long currentTime = new Date().getTime();
-		final boolean active = currentTime - game.getStartTime() < GAME_DURATION_TIME;
-		logger.info("GameKey={} is no longer active");
-		return active;
-	}
-	
-	private GameEntry.Builder buildCommonGameEntryInfo(GameEntry game) {
+	private GameEntry.Builder clone(GameEntry prototype) {
 		
-		return GameEntry.builder(game.getGameKey())
-			.playerName(game.getPlayer())
-			.answer(game.getAnswer())
-			.startTime(game.getStartTime());
+		return GameEntry.builder(prototype.getGameKey())
+			.playerName(prototype.getPlayer())
+			.answer(prototype.getAnswer())
+			.startTime(prototype.getStartTime());
 	}
 
 	public String buildKey(String keyBase) {
@@ -173,4 +164,5 @@ public class GameService {
 			throw new RuntimeException(ex);
 		}
 	}
+	
 }

@@ -111,7 +111,7 @@ public class MastermindRS {
 			}
 			return Response.ok(new WrongGuessTransformer().apply(game)).build();
 		}
-		return Response.ok("Your gameKey has been expired").build();
+		return Response.status(404).entity("Your gameKey has been expired").build();
 	}
 
 }

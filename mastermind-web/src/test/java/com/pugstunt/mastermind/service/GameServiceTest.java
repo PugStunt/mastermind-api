@@ -339,7 +339,6 @@ public class GameServiceTest {
 	private GameEntry createGameEntry(List<Color> answer) {
 		
 		return GameEntry.builder("gameKey")
-				.active(true)
 				.startTime(new Date().getTime())
 				.solved(false)
 				.playerName("Marty McFly")
