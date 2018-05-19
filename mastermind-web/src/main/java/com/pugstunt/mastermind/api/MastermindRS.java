@@ -74,6 +74,7 @@ public class MastermindRS {
 		response = GameCreated.class
 	)
 	@ApiResponses({
+		@ApiResponse(code = 200, message = "Game created"),
 		@ApiResponse(code = 500, message = "Internal Server Error")
 	})
 	public Response newGame(@ApiParam(value = "Player name field", required = true) CreateNewGame newGame) {
@@ -96,8 +97,8 @@ public class MastermindRS {
 	)
 	@ApiResponses({
 		@ApiResponse(code = 207, message = "When the player misses the answer", response = WrongGuess.class),
-		@ApiResponse(code = 419, message = "Game session expired", response = String.class),
-		@ApiResponse(code = 500, message = "Internal Server Error")
+		@ApiResponse(code = 403, message = "Game session expired", response = String.class),
+		@ApiResponse(code = 404, message = "Game doesn't exist")
 	})
 	public Response guess(@ApiParam(value = "Player guess", required = true) PlayerGuess playerGuess) {
 
