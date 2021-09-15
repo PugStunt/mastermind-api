@@ -1,8 +1,8 @@
 package com.pugstunt.mastermind.api;
 
 import static com.google.common.collect.Lists.newArrayList;
-import static com.jayway.restassured.RestAssured.given;
 import static com.pugstunt.mastermind.config.RestAssuredMapperConfig.getConfig;
+import static io.restassured.RestAssured.given;
 import static java.util.stream.Collectors.toList;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.any;
@@ -17,13 +17,14 @@ import static org.hamcrest.Matchers.notNullValue;
 
 import javax.ws.rs.core.MediaType;
 
+import io.restassured.RestAssured;
+import io.restassured.config.RestAssuredConfig;
+import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.config.RestAssuredConfig;
-import com.jayway.restassured.response.ValidatableResponse;
+
 import com.pugstunt.mastermind.core.domain.PlayerGuess;
 import com.pugstunt.mastermind.core.domain.CreateNewGame;
 import com.pugstunt.mastermind.core.domain.Result;

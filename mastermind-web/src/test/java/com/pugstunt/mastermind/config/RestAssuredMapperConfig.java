@@ -2,8 +2,8 @@ package com.pugstunt.mastermind.config;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.restassured.config.ObjectMapperConfig;
-import com.jayway.restassured.mapper.factory.Jackson2ObjectMapperFactory;
+import io.restassured.config.ObjectMapperConfig;
+import io.restassured.path.json.mapper.factory.Jackson2ObjectMapperFactory;
 
 public class RestAssuredMapperConfig {
 	

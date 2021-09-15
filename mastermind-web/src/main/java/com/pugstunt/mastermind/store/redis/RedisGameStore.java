@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Supplier;
 import com.google.inject.Inject;
 import com.lambdaworks.redis.RedisConnection;
 import com.pugstunt.mastermind.core.entity.GameEntry;
@@ -36,7 +35,7 @@ public class RedisGameStore implements GameStore {
 			logger.info("Saving game={} using TTL={}", game.getGameKey(), TIME_TO_LIVE);
 			connection.setex(game.getGameKey(), TIME_TO_LIVE, mapper.writeValueAsString(game));
 		} catch (JsonProcessingException ex) {
-			logger.error("An error occured while sving game={}", game.getGameKey(), ex);
+			logger.error("An error occurred while saving game={}", game.getGameKey(), ex);
 			throw new RuntimeException(ex);
 		} finally {
 			connectionPool.freeConnection(connection);
@@ -69,10 +68,10 @@ public class RedisGameStore implements GameStore {
 			return Optional.empty();
 		}
 		try {
-			logger.info("game={} found, parsing result");
+			logger.info("game={} found, parsing result", gameKey);
 			return Optional.of(mapper.readValue(gameEntry, GameEntry.class));
 		} catch (Exception ex) {
-			logger.error("An error ocurrend while parsing game={}", gameKey, ex);
+			logger.error("An error occurred while parsing game={}", gameKey, ex);
 			throw new RuntimeException(ex);
 		}
 	}

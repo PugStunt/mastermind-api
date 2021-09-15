@@ -1,4 +1,4 @@
-package com.pugstunt.mastermind.conf;
+package com.pugstunt.mastermind.conf.persistence;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,9 +15,9 @@ import com.pugstunt.mastermind.store.redis.RedisGameStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PersistenceModule extends AbstractModule {
+public class RedisModule extends AbstractModule {
 
-	static final Logger logger = LoggerFactory.getLogger(PersistenceModule.class);
+	static final Logger logger = LoggerFactory.getLogger(RedisModule.class);
 
 	@Override
 	protected void configure() {
@@ -34,7 +34,7 @@ public class PersistenceModule extends AbstractModule {
 
 	@Provides
 	@Singleton
-	public RedisConnectionPool<RedisConnection<String, String>> pool() throws Exception {
+	public RedisConnectionPool<RedisConnection<String, String>> pool() {
 
 		final String connection = System.getenv("redis.connection.string");
 		logger.info("redis.connection.string={}", connection);

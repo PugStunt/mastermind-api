@@ -2,7 +2,7 @@ package com.pugstunt.mastermind.service;
 
 import static java.util.stream.Collectors.joining;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -147,7 +147,6 @@ public class GameService {
 	}
 	
 	private GameEntry.GameEntryBuilder clone(GameEntry prototype) {
-		
 		return GameEntry.builder()
 			.gameKey(prototype.getGameKey())
 			.playerName(prototype.getPlayerName())
@@ -159,7 +158,7 @@ public class GameService {
 		logger.info("building gameKey using keyBase={}", keyBase);
 		try {
 			MessageDigest digest = MessageDigest.getInstance("MD5");
-			return new String(digest.digest(keyBase.getBytes()), Charset.forName("UTF-8"));
+			return new String(digest.digest(keyBase.getBytes()), StandardCharsets.UTF_8);
 		} catch (NoSuchAlgorithmException ex) {
 			logger.error("An error occured while building gameKey using keyBase={}", keyBase, ex);
 			throw new RuntimeException(ex);

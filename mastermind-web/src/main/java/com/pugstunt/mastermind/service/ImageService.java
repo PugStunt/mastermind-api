@@ -63,8 +63,7 @@ public class ImageService {
 		try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
 			ImageIO.write(img, "png", baos);
 			baos.flush();
-			byte[] imageInByte = baos.toByteArray();
-			return imageInByte;
+			return baos.toByteArray();
 		}
 		
 	}
